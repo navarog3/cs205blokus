@@ -41,19 +41,19 @@ public class Piece {
         squareLocations = pieceConfigs[z];
     }
 
-    public void HoInvert() {
+    public void mirror() {
         for (int i = 0; i < this.squareLocations.length; i++) {
             this.squareLocations[i].translate(-2 * (int) this.squareLocations[i].getX(), 0);
         }
     }
 
-    public void rotateClock() {
+    public void rotateCW() {
         for (int i = 0; i < this.squareLocations.length; i++) {
             this.squareLocations[i].move(-(int) this.squareLocations[i].getY(), (int) this.squareLocations[i].getX());
         }
     }
 
-    public void rotateCounter() {
+    public void rotateCCW() {
         for (int i = 0; i < this.squareLocations.length; i++) {
             this.squareLocations[i].move((int) this.squareLocations[i].getY(), -(int) this.squareLocations[i].getX());
         }

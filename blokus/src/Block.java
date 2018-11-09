@@ -1,5 +1,12 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Line;
 
 /**
  * A single Square on the blokus board. Squares have fixed height and width and
@@ -13,6 +20,7 @@ public class Block {
 
     // The shape for the square
     private Rectangle shape = new Rectangle(0, 0, 0, 0);
+    private Line[] borders = {new Line(), new Line(), new Line(), new Line()};
     // The x location in board coordinates
     private int xPos;
     // The y location in board coordinates
@@ -31,8 +39,9 @@ public class Block {
     public Block(Board board) {
         this.board = board;
         this.board.getChildren().add(shape);
-        this.shape.setX(xPos);
-        this.shape.setY(yPos);
+        for (int i = 0; i < 4; i++) {
+            this.board.getChildren().add(borders[i]);
+        }
         this.shape.setWidth(Board.SQUARE_SIZE);
         this.shape.setHeight(Board.SQUARE_SIZE);
 
@@ -51,8 +60,29 @@ public class Block {
      * @param y y-coordinate on the blokus board
      */
     public void moveToBlokusLocation(int x, int y) {
-        this.shape.setX(x*Board.SQUARE_SIZE);
-        this.shape.setY(y*Board.SQUARE_SIZE);
+        this.shape.setX(x * Board.SQUARE_SIZE);
+        this.shape.setY(y * Board.SQUARE_SIZE);
+        //Top border
+        this.borders[0].setStartX(x * Board.SQUARE_SIZE);
+        this.borders[0].setEndX((x + 1) * Board.SQUARE_SIZE);
+        this.borders[0].setStartY(y * Board.SQUARE_SIZE);
+        this.borders[0].setEndY(y * Board.SQUARE_SIZE);
+        //Left Border
+        this.borders[1].setStartX(x * Board.SQUARE_SIZE);
+        this.borders[1].setEndX(x * Board.SQUARE_SIZE);
+        this.borders[1].setStartY(y * Board.SQUARE_SIZE);
+        this.borders[1].setEndY((y + 1) * Board.SQUARE_SIZE);
+//        //Right Border
+//        this.borders[2].setStartX((x + 1) * Board.SQUARE_SIZE);
+//        this.borders[2].setEndX((x + 1) * Board.SQUARE_SIZE);
+//        this.borders[2].setStartY(y * Board.SQUARE_SIZE);
+//        this.borders[2].setEndY((y + 1) * Board.SQUARE_SIZE);
+//        //Bottom Border
+//        this.borders[2].setStartX(x * Board.SQUARE_SIZE);
+//        this.borders[2].setEndX((x + 1) * Board.SQUARE_SIZE);
+//        this.borders[2].setStartY((y + 1) * Board.SQUARE_SIZE);
+//        this.borders[2].setEndY((y + 1) * Board.SQUARE_SIZE);
+        
         this.xPos = x;
         this.yPos = y;
     }

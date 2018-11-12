@@ -13,26 +13,26 @@ import javafx.scene.paint.Color;
 public class Board extends Pane {
 
     // The size of the side of a blokus square
-    public static final int SQUARE_SIZE = 20;
+    public static final int BLOCK_SIZE = 20;
     // The number of squares that fit on the screen in the x and y dimensions
-    public static final int DIM_SQUARES = 40;
+    public static final int DIM_SQUARES = 20;
     public int score;
+    
+        //Creates a 2D array that will track the locations of all the pieces on the board.
+    public Block[][] squares = new Block[DIM_SQUARES][DIM_SQUARES];
 
     /**
      * Sizes the board to hold the specified number of squares in the x and y
      * dimensions.
      */
     public Board() {
-        this.setPrefHeight(DIM_SQUARES * SQUARE_SIZE);
-        this.setPrefWidth(DIM_SQUARES * SQUARE_SIZE);
+        this.setPrefHeight(DIM_SQUARES * BLOCK_SIZE);
+        this.setPrefWidth(DIM_SQUARES * BLOCK_SIZE);
         BackgroundFill myBF = new BackgroundFill(Color.WHITE, new CornerRadii(1),
                 new Insets(0.0, 0.0, 0.0, 0.0));// or null for the padding
         setBackground(new Background(myBF));
 
     }
-
-    //Creates a 2D array that will track the locations of all the pieces on the board.
-    public Block[][] squares = new Block[DIM_SQUARES][DIM_SQUARES];
 
     /**
      * Adds ablokusSquare to the board array

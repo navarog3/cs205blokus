@@ -1,4 +1,3 @@
-
 import java.awt.Point;
 import java.util.ArrayList;
 import javafx.scene.paint.Color;
@@ -76,8 +75,7 @@ public class Piece {
         this.color = color;
         this.board = board;
         for (int i = 0; i < squareLocations.length; i++) {
-            Block block = new Block(board);
-            block.setColor(color);
+            Block block = new Block(board, color);
             this.squares.add(block);
             block.moveToBlokusLocation((x + (int) squareLocations[i].getX()),
                     (y + (int) squareLocations[i].getY()));
@@ -109,21 +107,8 @@ public class Piece {
                     this.squares.get(0).getY() + (int) squareLocations[i].getY());
             newLocation.add(point);
         }
-        boolean move = true;
-        //Checks the new square locations to see if they are occupied or off the board.
-        //If either are true, the peice does not move.
-        for (int i = 0; i < this.squareLocations.length; i++) {
-            if (newLocation.get(i).getX() < 0
-                    || newLocation.get(i).getY() < 0
-                    || newLocation.get(i).getX() >= Board.DIM_SQUARES
-                    || newLocation.get(i).getY() >= Board.DIM_SQUARES // || board.isOccupied((int) newLocation.get(i).getY(), (int) newLocation.get(i).getX())
-                    ) {
-                move = false;
-                break;
-            }
-        }
         //Rotates the piece if it is allowed to rotate.
-        if (move) {
+        if (this.onBoard(newLocation)) {
             for (int i = 0; i < this.squareLocations.length; i++) {
                 this.squares.get(i).moveToBlokusLocation((int) newLocation.get(i).getX(),
                         (int) newLocation.get(i).getY());
@@ -157,24 +142,8 @@ public class Piece {
                     yPos + (int) squareLocations[i].getY());
             newLocation.add(point);
         }
-        boolean move = true;
-        //Checks the new square locations to see if they are occupied or off the board.
-        //If either are true, the peice does not move.
-        for (int i = 0; i < this.squareLocations.length; i++) {
-            if (newLocation.get(i).getX() < 0
-                    || newLocation.get(i).getY() < 0
-                    || newLocation.get(i).getX() >= Board.DIM_SQUARES
-                    || newLocation.get(i).getY() >= Board.DIM_SQUARES 
-                    //|| board.isOccupied((int) newLocation.get(i).getY(), (int) newLocation.get(i).getX())
-                    ) {
-                move = false;
-                System.out.println(newLocation.get(i));
-                break;
-            }
-        }
-        System.out.println(move);
-        //If the desired spot is open, then move the piece
-        if (move) {
+        //If the desired spot is on the board, then move the piece
+        if (this.onBoard(newLocation)) {
             for (int i = 0; i < this.squareLocations.length; i++) {
                 this.squares.get(i).moveToBlokusLocation(xPos + (int) this.squareLocations[i].getX(),
                         yPos + (int) this.squareLocations[i].getY());
@@ -183,8 +152,9 @@ public class Piece {
     }
 
     /**
-     * Adds the piece to the board at its current location and creates a new
-     * active piece.
+     * Adds the piece to the board at its current location.
+     *
+     * @return Whether or not the piece was added to the board.
      */
     public boolean addPieceToBoard() {
         ArrayList<Point> newLocation = new ArrayList<>();
@@ -193,24 +163,168 @@ public class Piece {
                     this.squares.get(0).getY() + (int) squareLocations[i].getY());
             newLocation.add(point);
         }
-        boolean place = true;
+        boolean place = false;
+        //Checks if the piece fits on the board at the current location
+        //If so, adds the piece's blocks to the board.
+        if (this.fitsOnBoard(newLocation) && this.legalMove(newLocation)) {
+            for (int i = 0; i < squareLocations.length; i++) {
+                this.board.addToBoard(this.squares.get(i));
+            }
+            place = true;
+        }
+        return place;
+    }
+
+    /**
+     * Adds the piece to the board at its current location. Does not check if
+     * the move is legal
+     *
+     * @return Whether or not the piece was added to the board.
+     */
+    public boolean forceAddPieceToBoard() {
+        ArrayList<Point> newLocation = new ArrayList<>();
+        for (int i = 0; i < this.squareLocations.length; i++) {
+            Point point = new Point(this.squares.get(0).getX() + (int) squareLocations[i].getX(),
+                    this.squares.get(0).getY() + (int) squareLocations[i].getY());
+            newLocation.add(point);
+        }
+        boolean place = false;
+        //Checks if the piece fits on the board at the current location
+        //If so, adds the piece's blocks to the board.
+        if (this.fitsOnBoard(newLocation)) {
+            for (int i = 0; i < squareLocations.length; i++) {
+                this.board.addToBoard(this.squares.get(i));
+            }
+            place = true;
+        }
+        return place;
+    }
+
+    //A method that returns whether or not an arrayList of points is entirely within
+    //the boundaries of the board.
+    public boolean onBoard(ArrayList<Point> newLocation) {
+        boolean on = true;
+        for (int i = 0; i < this.squareLocations.length; i++) {
+            if (newLocation.get(i).getX() < 0
+                    || newLocation.get(i).getY() < 0
+                    || newLocation.get(i).getX() >= Board.DIM_SQUARES
+                    || newLocation.get(i).getY() >= Board.DIM_SQUARES) {
+                on = false;
+                break;
+            }
+        }
+        return on;
+    }
+
+    //Takes an arrayList of points and returns true if those points are on the
+    //board and unoccupied.
+    public boolean fitsOnBoard(ArrayList<Point> newLocation) {
+        boolean on = true;
         for (int i = 0; i < this.squareLocations.length; i++) {
             if (newLocation.get(i).getX() < 0
                     || newLocation.get(i).getY() < 0
                     || newLocation.get(i).getX() >= Board.DIM_SQUARES
                     || newLocation.get(i).getY() >= Board.DIM_SQUARES
-                    || board.isOccupied((int) newLocation.get(i).getX(), (int) newLocation.get(i).getY())
-                    ) {
-                place = false;
-                System.out.println(newLocation.get(i));
+                    || board.isOccupied((int) newLocation.get(i).getX(), (int) newLocation.get(i).getY())) {
+                on = false;
+                break;
             }
         }
-        System.out.println(place);
-        if (place) {
-            for (int i = 0; i < squareLocations.length; i++) {
-                this.board.addToBoard(this.squares.get(i));
+        return on;
+    }
+
+    public boolean legalMove(ArrayList<Point> newLocation) {
+        boolean legal = false;
+        int xPos;
+        int yPos;
+
+        for (int i = 0; i < this.squareLocations.length; i++) {
+            xPos = (int) newLocation.get(i).getX();
+            yPos = (int) newLocation.get(i).getY();
+
+            //CHECKS THE DIAGONAL SQAURES FOR BLOCKS OF THE SAME COLOR
+            //Checks top right diagonal
+            if (xPos + 1 < Board.DIM_SQUARES && yPos - 1 >= 0) {
+                if (board.squares[xPos + 1][yPos - 1] != null) {
+                    if (board.squares[xPos + 1][yPos - 1].getColor() == this.color) {
+                        System.out.println("Top Right Same Color");
+                        legal = true;
+                    }
+                }
+            }
+
+            //Checks top left diagonal
+            if (xPos - 1 >= 0 && yPos - 1 >= 0) {
+                if (board.squares[xPos - 1][yPos - 1] != null) {
+                    if (board.squares[xPos - 1][yPos - 1].getColor() == this.color) {
+                        System.out.println("Top Left Same Color");
+                        legal = true;
+                    }
+                }
+            }
+
+            //Checks bottom right diagonal
+            if (xPos + 1 < Board.DIM_SQUARES && yPos + 1 < Board.DIM_SQUARES) {
+                if (board.squares[xPos + 1][yPos + 1] != null) {
+                    if (board.squares[xPos + 1][yPos + 1].getColor() == this.color) {
+                        System.out.println("Bottom Right Same Color");
+                        legal = true;
+                    }
+                }
+            }
+
+            //Checks bottom left diagonal
+            if (xPos - 1 >= 0 && yPos + 1 < Board.DIM_SQUARES) {
+                if (board.squares[xPos - 1][yPos + 1] != null) {
+                    if (board.squares[xPos - 1][yPos + 1].getColor() == this.color) {
+                        System.out.println("Bottom Left Same Color");
+                        legal = true;
+                    }
+                }
+            }
+
+            //CHECKS THE ADJACENT SQAURES FOR BLOCKS OF THE SAME COLOR
+            //Check the blocks to the right to see if they are the same color.
+            if (xPos + 1 < Board.DIM_SQUARES) {
+                if (board.squares[xPos + 1][yPos] != null) {
+                    if (board.squares[xPos + 1][yPos].getColor() == this.color) {
+                        System.out.println("Right same Color");
+                        legal = false;
+                        break;
+                    }
+                }
+            }
+            //Check the blocks to the left to see if they are the same color.
+            if (xPos - 1 >= 0) {
+                if (board.squares[xPos - 1][yPos] != null) {
+                    if (board.squares[xPos - 1][yPos].getColor() == this.color) {
+                        System.out.println("Left same Color");
+                        legal = false;
+                        break;
+                    }
+                }
+            }
+            //Check the blocks below to see if they are the same color.
+            if (yPos + 1 < Board.DIM_SQUARES) {
+                if (board.squares[xPos][yPos + 1] != null) {
+                    if (board.squares[xPos][yPos + 1].getColor() == this.color) {
+                        System.out.println("Bottom same Color");
+                        legal = false;
+                        break;
+                    }
+                }
+            }
+            //Check the blocks above to see if they are the same color.
+            if (yPos - 1 >= 0) {
+                if (board.squares[xPos][yPos - 1] != null) {
+                    if (board.squares[xPos][yPos - 1].getColor() == this.color) {
+                        System.out.println("Top same Color");
+                        legal = false;
+                        break;
+                    }
+                }
             }
         }
-        return place;
+        return legal;
     }
 }

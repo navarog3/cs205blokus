@@ -1,3 +1,4 @@
+
 import java.awt.Point;
 import java.util.ArrayList;
 import javafx.scene.paint.Color;
@@ -101,31 +102,10 @@ public class Piece {
                 this.mirror();
                 break;
         }
-        ArrayList<Point> newLocation = new ArrayList<>();
         for (int i = 0; i < this.squareLocations.length; i++) {
-            Point point = new Point(this.squares.get(0).getX() + (int) squareLocations[i].getX(),
+            this.squares.get(i).moveToBlokusLocation(this.squares.get(0).getX() + (int) squareLocations[i].getX(),
                     this.squares.get(0).getY() + (int) squareLocations[i].getY());
-            newLocation.add(point);
-        }
-        //Rotates the piece if it is allowed to rotate.
-        if (this.onBoard(newLocation)) {
-            for (int i = 0; i < this.squareLocations.length; i++) {
-                this.squares.get(i).moveToBlokusLocation((int) newLocation.get(i).getX(),
-                        (int) newLocation.get(i).getY());
-            }
-            // If can't move, rotates the piece back to original orientation
-        } else {
-            switch (dir) {
-                case 0:
-                    this.rotateCW();
-                    break;
-                case 1:
-                    this.rotateCCW();
-                    break;
-                case 2:
-                    this.mirror();
-                    break;
-            }
+
         }
     }
 
@@ -136,18 +116,9 @@ public class Piece {
      * @param yPos
      */
     public void move(int xPos, int yPos) {
-        ArrayList<Point> newLocation = new ArrayList<>();
         for (int i = 0; i < this.squareLocations.length; i++) {
-            Point point = new Point(xPos + (int) squareLocations[i].getX(),
-                    yPos + (int) squareLocations[i].getY());
-            newLocation.add(point);
-        }
-        //If the desired spot is on the board, then move the piece
-        if (this.onBoard(newLocation)) {
-            for (int i = 0; i < this.squareLocations.length; i++) {
-                this.squares.get(i).moveToBlokusLocation(xPos + (int) this.squareLocations[i].getX(),
-                        yPos + (int) this.squareLocations[i].getY());
-            }
+            this.squares.get(i).moveToBlokusLocation(xPos + (int) this.squareLocations[i].getX(),
+                    yPos + (int) this.squareLocations[i].getY());
         }
     }
 
@@ -181,17 +152,48 @@ public class Piece {
      *
      * @return Whether or not the piece was added to the board.
      */
-    public boolean forceAddPieceToBoard() {
+    public boolean firstAddPieceToBoard() {
         ArrayList<Point> newLocation = new ArrayList<>();
         for (int i = 0; i < this.squareLocations.length; i++) {
             Point point = new Point(this.squares.get(0).getX() + (int) squareLocations[i].getX(),
                     this.squares.get(0).getY() + (int) squareLocations[i].getY());
             newLocation.add(point);
         }
-        boolean place = false;
-        //Checks if the piece fits on the board at the current location
+
+        //Forces the first piece of each color to be places in the corresponding corner
+        boolean correctCorner = false;
+        if (this.color == Color.RED) {
+            for (int i = 0; i < squareLocations.length; i++) {
+                if (this.squares.get(i).getX() == 0 && this.squares.get(i).getY() == Board.DIM_SQUARES - 1) {
+                    correctCorner = true;
+                }
+            }
+        }
+        if (this.color == Color.BLUE) {
+            for (int i = 0; i < squareLocations.length; i++) {
+                if (this.squares.get(i).getX() == 0 && this.squares.get(i).getY() == 0) {
+                    correctCorner = true;
+                }
+            }
+        }
+        if (this.color == Color.YELLOW) {
+            for (int i = 0; i < squareLocations.length; i++) {
+                if (this.squares.get(i).getX() == Board.DIM_SQUARES - 1 && this.squares.get(i).getY() == 0) {
+                    correctCorner = true;
+                }
+            }
+        }
+        if (this.color == Color.GREEN) {
+            for (int i = 0; i < squareLocations.length; i++) {
+                if (this.squares.get(i).getX() == Board.DIM_SQUARES - 1 && this.squares.get(i).getY() == Board.DIM_SQUARES - 1) {
+                    correctCorner = true;
+                }
+            }
+        }
+        //Checks if the piece also fits on the board at the correct corner.
         //If so, adds the piece's blocks to the board.
-        if (this.fitsOnBoard(newLocation)) {
+        boolean place = false;
+        if (this.fitsOnBoard(newLocation) && correctCorner) {
             for (int i = 0; i < squareLocations.length; i++) {
                 this.board.addToBoard(this.squares.get(i));
             }
@@ -202,7 +204,7 @@ public class Piece {
 
     //A method that returns whether or not an arrayList of points is entirely within
     //the boundaries of the board.
-    public boolean onBoard(ArrayList<Point> newLocation) {
+    private boolean onBoard(ArrayList<Point> newLocation) {
         boolean on = true;
         for (int i = 0; i < this.squareLocations.length; i++) {
             if (newLocation.get(i).getX() < 0
@@ -218,7 +220,7 @@ public class Piece {
 
     //Takes an arrayList of points and returns true if those points are on the
     //board and unoccupied.
-    public boolean fitsOnBoard(ArrayList<Point> newLocation) {
+    private boolean fitsOnBoard(ArrayList<Point> newLocation) {
         boolean on = true;
         for (int i = 0; i < this.squareLocations.length; i++) {
             if (newLocation.get(i).getX() < 0
@@ -233,7 +235,10 @@ public class Piece {
         return on;
     }
 
-    public boolean legalMove(ArrayList<Point> newLocation) {
+    //Takes an arrayList of points and returns true if the current piece
+    //can legally be placed at that location. Checks adjacent and diagonal squares 
+    //for blocks of the same color.
+    private boolean legalMove(ArrayList<Point> newLocation) {
         boolean legal = false;
         int xPos;
         int yPos;

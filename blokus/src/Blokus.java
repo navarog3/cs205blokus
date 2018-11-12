@@ -20,6 +20,7 @@ public class Blokus extends Application {
     public static double MILLISEC = 300;
     private Game game;
     private Board board;
+    private Board pieceBoard;
     private Timeline animation;
     private Label statusLabel;
 
@@ -43,8 +44,9 @@ public class Blokus extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         board = new Board();
-
-        statusLabel = new Label("Tetris");
+        pieceBoard = new Board();
+        
+        statusLabel = new Label("");
         statusLabel.setTextFill(Color.BLACK);
 
         BorderPane pane = new BorderPane();

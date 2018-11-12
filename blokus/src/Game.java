@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.scene.paint.Color;
@@ -12,8 +13,8 @@ public class Game {
     private final Blokus blokusApp;
     private Piece activePiece;
     private final Board board;
-    private int piece = 0;
-    private final Color[] Colors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW};
+    private int piece = (int) (Math.random() * 21);
+    private final Color[] Colors = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
     private int turn = 0;
 
     /**
@@ -77,7 +78,7 @@ public class Game {
      * Place the piece onto the board.
      */
     void placePiece() {
-        if (turn < 4 && this.activePiece.forceAddPieceToBoard()) {
+        if (turn < 4 && this.activePiece.firstAddPieceToBoard()) {
             turn++;
             piece = (int) (Math.random() * 21);
             activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);

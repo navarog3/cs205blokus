@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.scene.paint.Color;
@@ -12,7 +11,7 @@ public class Game {
 
     private final Blokus blokusApp;
     private Piece activePiece;
-    private Board board;
+    private final Board board;
     private int piece = 0;
     private final Color[] Colors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW};
     private int turn = 0;
@@ -31,7 +30,7 @@ public class Game {
         this.board = board;
 
         this.blokusApp = blokusApp;
-        blokusApp.setMessage("BLOKUS");
+        //blokusApp.setMessage("BLOKUS");
     }
 
     /**
@@ -71,21 +70,21 @@ public class Game {
     }
 
     void hover(double x, double y) {
-        this.activePiece.move((int) x / Board.SQUARE_SIZE, (int) (y - 20) / Board.SQUARE_SIZE);
+        this.activePiece.move((int) x / Board.BLOCK_SIZE, (int) (y - 20) / Board.BLOCK_SIZE);
     }
 
     /**
      * Place the piece onto the board.
      */
     void placePiece() {
-        if(this.activePiece.addPieceToBoard()){
-        turn++;
-        piece = (int) (Math.random() * 21);
-        if (turn > 3) {
-            turn = 0;
-        }
-        activePiece = new Piece(board, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
-        System.out.println("Space was pressed");
+        if (turn < 4 && this.activePiece.forceAddPieceToBoard()) {
+            turn++;
+            piece = (int) (Math.random() * 21);
+            activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
+        } else if (this.activePiece.addPieceToBoard()) {
+            turn++;
+            piece = (int) (Math.random() * 21);
+            activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
         }
     }
 }

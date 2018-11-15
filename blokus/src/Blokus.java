@@ -109,6 +109,7 @@ public class Blokus extends Application {
                 case DOWN:
                     break;
                 case UP:
+                    game.mirror();
                     break;
                 case M:
                     game.mirror();

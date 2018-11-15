@@ -1,19 +1,19 @@
+
 import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.util.Duration;
+import javafx.animation.Timeline;
+import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 /**
  * The blokus Application, which contains the board and a message label.
  *
- * @author Evan Hollar
  */
 public class Blokus extends Application {
 
@@ -45,7 +45,7 @@ public class Blokus extends Application {
     public void start(Stage primaryStage) throws Exception {
         board = new Board();
         pieceBoard = new Board();
-        
+
         statusLabel = new Label("");
         statusLabel.setTextFill(Color.BLACK);
 
@@ -130,7 +130,7 @@ public class Blokus extends Application {
             game.placePiece();
         });
         board.setOnMouseMoved(e -> {
-        game.hover(e.getSceneX(), e.getSceneY());
+            game.hover(e.getSceneX(), e.getSceneY());
         });
     }
 

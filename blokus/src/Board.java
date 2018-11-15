@@ -41,11 +41,11 @@ public class Board extends Pane {
             verticalLines.add(new Line((i + 1) * BLOCK_SIZE, 0, (i + 1) * BLOCK_SIZE, DIM_SQUARES * BLOCK_SIZE));
         }
         //Create the starting circles
-        startingCircles.add(new Circle(BLOCK_SIZE/2, BLOCK_SIZE/2, BLOCK_SIZE/2, Color.RED));
-        startingCircles.add(new Circle(BLOCK_SIZE/2, DIM_SQUARES*(BLOCK_SIZE-.5), BLOCK_SIZE/2, Color.BLUE));
-        startingCircles.add(new Circle(DIM_SQUARES*(BLOCK_SIZE-.5), BLOCK_SIZE/2, BLOCK_SIZE/2, Color.GREEN));
-        startingCircles.add(new Circle(DIM_SQUARES*(BLOCK_SIZE-.5), DIM_SQUARES*(BLOCK_SIZE-.5), BLOCK_SIZE/2, Color.YELLOW));
-        
+        startingCircles.add(new Circle(BLOCK_SIZE / 2, BLOCK_SIZE / 2, BLOCK_SIZE / 2, Color.BLUE));
+        startingCircles.add(new Circle(BLOCK_SIZE / 2, DIM_SQUARES * (BLOCK_SIZE - .5), BLOCK_SIZE / 2, Color.RED));
+        startingCircles.add(new Circle(DIM_SQUARES * (BLOCK_SIZE - .5), BLOCK_SIZE / 2, BLOCK_SIZE / 2, Color.YELLOW));
+        startingCircles.add(new Circle(DIM_SQUARES * (BLOCK_SIZE - .5), DIM_SQUARES * (BLOCK_SIZE - .5), BLOCK_SIZE / 2, Color.GREEN));
+
         for (int i = 0; i < 4; i++) {
             this.getChildren().add(startingCircles.get(i));
         }

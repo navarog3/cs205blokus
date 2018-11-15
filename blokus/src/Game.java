@@ -6,7 +6,6 @@ import javafx.scene.paint.Color;
 /**
  * BlokusGame class
  *
- * @author Evan Hollar
  */
 public class Game {
 
@@ -20,7 +19,7 @@ public class Game {
     /**
      * Initialize the game. Selects a random shape to act as the current piece.
      *
-     * @paramblokusApp A reference to the application (use to set messages).
+     * @param blokusApp A reference to the application (use to set messages).
      * @param board A reference to the board on which blocks are drawn
      */
     public Game(Blokus blokusApp, Board board) {

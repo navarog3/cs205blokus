@@ -5,8 +5,6 @@ import javafx.scene.paint.Color;
 
 /**
  * A contains the info and methods for the blokus pieces
- *
- * @author Evan Hollar
  */
 public class Piece {
 
@@ -67,6 +65,7 @@ public class Piece {
      * The constructor for Piece
      *
      * @param board
+     * @param color color of the piece
      * @param x the original x location of the piece
      * @param y the original y location of the piece
      * @param z Chooses which blokus piece to create

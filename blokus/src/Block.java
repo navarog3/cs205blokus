@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
@@ -36,6 +30,7 @@ public class Block {
      * and blokus_y are updated, the block's location will update.
      *
      * @param board
+     * @param color
      */
     public Block(Board board, Color color) {
         this.board = board;

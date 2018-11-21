@@ -1,4 +1,3 @@
-
 import java.awt.Point;
 import java.util.ArrayList;
 import javafx.scene.paint.Color;
@@ -13,6 +12,10 @@ public class Piece {
     private Board board;
 
     private Point[] squareLocations;
+
+    private Point[] diagonals = {new Point(-1, -1), new Point(1, -1), new Point(-1, 1), new Point(1, 1)};
+
+    private Point[] adjacents = {new Point(-1, 0), new Point(0, -1), new Point(1, 0), new Point(0, 1)};
 
     private Color color;
 
@@ -238,97 +241,61 @@ public class Piece {
     //can legally be placed at that location. Checks adjacent and diagonal squares 
     //for blocks of the same color.
     private boolean legalMove(ArrayList<Point> newLocation) {
-        boolean legal = false;
-        int xPos;
-        int yPos;
+        boolean adjacentSameColor = false;
+        boolean diagonalSameColor = false;
 
+        //Loops through the block locations of the piece being checked
         for (int i = 0; i < this.squareLocations.length; i++) {
-            xPos = (int) newLocation.get(i).getX();
-            yPos = (int) newLocation.get(i).getY();
 
-            //CHECKS THE DIAGONAL SQAURES FOR BLOCKS OF THE SAME COLOR
-            //Checks top right diagonal
-            if (xPos + 1 < Board.DIM_SQUARES && yPos - 1 >= 0) {
-                if (board.squares[xPos + 1][yPos - 1] != null) {
-                    if (board.squares[xPos + 1][yPos - 1].getColor() == this.color) {
-                        System.out.println("Top Right Same Color");
-                        legal = true;
-                    }
-                }
+            Point location = newLocation.get(i);
+            
+            //Breaks the loop if there is an adjacent square of the same color
+            //A piece will never be able to be placed here.
+            if(adjacentSameColor == true) {
+                break;
             }
 
-            //Checks top left diagonal
-            if (xPos - 1 >= 0 && yPos - 1 >= 0) {
-                if (board.squares[xPos - 1][yPos - 1] != null) {
-                    if (board.squares[xPos - 1][yPos - 1].getColor() == this.color) {
-                        System.out.println("Top Left Same Color");
-                        legal = true;
-                    }
-                }
-            }
-
-            //Checks bottom right diagonal
-            if (xPos + 1 < Board.DIM_SQUARES && yPos + 1 < Board.DIM_SQUARES) {
-                if (board.squares[xPos + 1][yPos + 1] != null) {
-                    if (board.squares[xPos + 1][yPos + 1].getColor() == this.color) {
-                        System.out.println("Bottom Right Same Color");
-                        legal = true;
+            //Loops through the squares diagonal to the piece being checked
+            for (int j = 0; j < this.diagonals.length; j++) {
+                //Creates a new square to be checked
+                Point checkSquare = new Point((int) location.getX() + (int) diagonals[j].getX(),
+                        (int) location.getY() + (int) diagonals[j].getY());
+                //Checks that it is on the board and not empty
+                if (checkSquare.getX() >= 0 && checkSquare.getY() >= 0
+                        && checkSquare.getX() < Board.DIM_SQUARES
+                        && checkSquare.getY() < Board.DIM_SQUARES) {
+                    if (board.squares[(int) checkSquare.getX()][(int) checkSquare.getY()] != null) {
+                        //Returns true if this square being checked is the same color as the piece
+                        if (board.squares[(int) checkSquare.getX()][(int) checkSquare.getY()].getColor() == this.color) {
+                            System.out.println("Diagonal Same Color");
+                            diagonalSameColor = true;
+                        }
                     }
                 }
             }
 
-            //Checks bottom left diagonal
-            if (xPos - 1 >= 0 && yPos + 1 < Board.DIM_SQUARES) {
-                if (board.squares[xPos - 1][yPos + 1] != null) {
-                    if (board.squares[xPos - 1][yPos + 1].getColor() == this.color) {
-                        System.out.println("Bottom Left Same Color");
-                        legal = true;
-                    }
-                }
-            }
-
-            //CHECKS THE ADJACENT SQAURES FOR BLOCKS OF THE SAME COLOR
-            //Check the blocks to the right to see if they are the same color.
-            if (xPos + 1 < Board.DIM_SQUARES) {
-                if (board.squares[xPos + 1][yPos] != null) {
-                    if (board.squares[xPos + 1][yPos].getColor() == this.color) {
-                        System.out.println("Right same Color");
-                        legal = false;
-                        break;
-                    }
-                }
-            }
-            //Check the blocks to the left to see if they are the same color.
-            if (xPos - 1 >= 0) {
-                if (board.squares[xPos - 1][yPos] != null) {
-                    if (board.squares[xPos - 1][yPos].getColor() == this.color) {
-                        System.out.println("Left same Color");
-                        legal = false;
-                        break;
-                    }
-                }
-            }
-            //Check the blocks below to see if they are the same color.
-            if (yPos + 1 < Board.DIM_SQUARES) {
-                if (board.squares[xPos][yPos + 1] != null) {
-                    if (board.squares[xPos][yPos + 1].getColor() == this.color) {
-                        System.out.println("Bottom same Color");
-                        legal = false;
-                        break;
-                    }
-                }
-            }
-            //Check the blocks above to see if they are the same color.
-            if (yPos - 1 >= 0) {
-                if (board.squares[xPos][yPos - 1] != null) {
-                    if (board.squares[xPos][yPos - 1].getColor() == this.color) {
-                        System.out.println("Top same Color");
-                        legal = false;
-                        break;
+            //Loops through the squares adjacent to the piece being checked
+            for (int j = 0; j < this.adjacents.length; j++) {
+                //Creates a new square to be checked
+                Point checkSquare = new Point((int) location.getX() + (int) adjacents[j].getX(),
+                        (int) location.getY() + (int) adjacents[j].getY());
+                //Checks that it is on the board and not empty
+                if (checkSquare.getX() >= 0 && checkSquare.getY() >= 0
+                        && checkSquare.getX() < Board.DIM_SQUARES
+                        && checkSquare.getY() < Board.DIM_SQUARES) {
+                    if (board.squares[(int) checkSquare.getX()][(int) checkSquare.getY()] != null) {
+                        //Returns true if this square being checked is the same color as the piece
+                        if (board.squares[(int) checkSquare.getX()][(int) checkSquare.getY()].getColor() == this.color) {
+                            System.out.println("Adjacent Same Color");
+                            adjacentSameColor = true;
+                            break;
+                        }
                     }
                 }
             }
         }
-        return legal;
+        //Returns true only if there is a diagnonal block of the same color
+        //and no adjacent blocks of the same color
+        return (diagonalSameColor && !adjacentSameColor);
     }
 }

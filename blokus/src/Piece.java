@@ -1,3 +1,4 @@
+
 import java.awt.Point;
 import java.util.ArrayList;
 import javafx.scene.paint.Color;
@@ -248,10 +249,10 @@ public class Piece {
         for (int i = 0; i < this.squareLocations.length; i++) {
 
             Point location = newLocation.get(i);
-            
+
             //Breaks the loop if there is an adjacent square of the same color
             //A piece will never be able to be placed here.
-            if(adjacentSameColor == true) {
+            if (adjacentSameColor == true) {
                 break;
             }
 
@@ -267,7 +268,6 @@ public class Piece {
                     if (board.squares[(int) checkSquare.getX()][(int) checkSquare.getY()] != null) {
                         //Returns true if this square being checked is the same color as the piece
                         if (board.squares[(int) checkSquare.getX()][(int) checkSquare.getY()].getColor() == this.color) {
-                            System.out.println("Diagonal Same Color");
                             diagonalSameColor = true;
                         }
                     }
@@ -286,7 +286,6 @@ public class Piece {
                     if (board.squares[(int) checkSquare.getX()][(int) checkSquare.getY()] != null) {
                         //Returns true if this square being checked is the same color as the piece
                         if (board.squares[(int) checkSquare.getX()][(int) checkSquare.getY()].getColor() == this.color) {
-                            System.out.println("Adjacent Same Color");
                             adjacentSameColor = true;
                             break;
                         }
@@ -297,5 +296,47 @@ public class Piece {
         //Returns true only if there is a diagnonal block of the same color
         //and no adjacent blocks of the same color
         return (diagonalSameColor && !adjacentSameColor);
+    }
+
+    //Checks to see if the piece can be placed at any square on the board in 
+    //any orientation
+    public boolean availableMove() {
+        boolean move = false;
+
+        int xPos = this.squares.get(0).getX();
+        int yPos = this.squares.get(0).getY();
+
+        rotateLoop:
+        for (int h = 1; h < 9; h++) {
+            for (int i = 0; i < Board.DIM_SQUARES; i++) {
+                for (int j = 0; j < Board.DIM_SQUARES; j++) {
+
+                    this.move(i, j);
+
+                    ArrayList<Point> newLocation = new ArrayList<>();
+                    for (int k = 0; k < this.squareLocations.length; k++) {
+                        Point point = new Point(this.squares.get(0).getX() + (int) squareLocations[k].getX(),
+                                this.squares.get(0).getY() + (int) squareLocations[k].getY());
+                        newLocation.add(point);
+                    }
+                    if (this.fitsOnBoard(newLocation) && this.legalMove(newLocation)) {
+                        move = true;
+                        System.out.println("Legal Move at (" + i + ", " + j + ")");
+                        //Uncomment to break when 1 legal move is found
+                        //break rotateLoop;
+                    }
+                }
+            }
+            //Rotates the block so the checks can be re-done in a new orientation.
+            this.rotateCW();
+            //Once the block has been rotated 
+            if (h % 4 == 0) {
+                this.mirror();
+            }
+        }
+        //Moves the piece back to its original position
+        this.move(xPos, yPos);
+
+        return move;
     }
 }

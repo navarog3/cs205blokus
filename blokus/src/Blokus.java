@@ -115,6 +115,7 @@ public class Blokus extends Application {
                     game.mirror();
                     break;
                 case SPACE:
+                    game.checkForMove();
                     break;
 
             }

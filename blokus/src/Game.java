@@ -87,4 +87,13 @@ public class Game {
             activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
         }
     }
+    
+    void checkForMove () {
+        if(this.activePiece.availableMove()) {
+            System.out.println("Move is available");
+        }
+        else {
+            System.out.println("No move available");
+        }
+    }
 }

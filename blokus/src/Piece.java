@@ -329,6 +329,8 @@ public class Piece {
                         move = true;
                         System.out.println("Legal Move at (" + i + ", " + j + ")");
                         //Uncomment to break when 1 legal move is found
+                        this.squareLocations = dummyLocations;
+                        this.move(i, j);
                         break rotateLoop;
                     }
                 }

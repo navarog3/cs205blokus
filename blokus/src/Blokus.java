@@ -10,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.scene.control.MenuBar;
+
 /**
  * The blokus Application, which contains the board and a message label.
  *
@@ -20,10 +20,9 @@ public class Blokus extends Application {
     public static double MILLISEC = 300;
     private Game game;
     private Board board;
-    //private Board invBoard;
+    private Board pieceBoard;
     private Timeline animation;
     private Label statusLabel;
-    private MenuBar menuBar;
 
     /**
      * Launches the application.
@@ -45,8 +44,7 @@ public class Blokus extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         board = new Board();
-        //invBoard = new Board();
-        menuBar = new MenuBar();
+        pieceBoard = new Board();
 
         statusLabel = new Label("");
         statusLabel.setTextFill(Color.BLACK);

@@ -1,0 +1,11 @@
+root pane contains all other -> directly controls game board, hbox for scores,
+
+1 root pane
+	4 flow panes (2 on each side)
+		- contain player's pieces
+		- can click pieces to select for placing
+	1 hbox for top
+		- scores for player & computer
+	1 hbox for bottom help
+		- Help button -> might need hidden pane for help page
+		- save, new, load

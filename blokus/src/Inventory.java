@@ -47,12 +47,17 @@ public class Inventory extends Pane {
     }
     
     /**
-     * Adds ablokusSquare to the board array
+     * Adds ablokusSquare to the inventory array
      *
      * @param square
      */
     public void addToInventory(Block square) {
         squares[square.getX()][square.getY()] = square;
+    }
+    
+    // Empties out the inventory pane
+    public void clearInventory() {
+    	
     }
 
     /**

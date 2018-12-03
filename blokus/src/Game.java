@@ -1,6 +1,8 @@
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
 /**
@@ -13,6 +15,7 @@ public class Game {
     private Piece activePiece;
     private final Board board;
     private final Inventory inventory;
+    private final Player[] players;
     private int piece = (int) (Math.random() * 21);
     private final Color[] Colors = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
     private int turn = 0;
@@ -26,13 +29,16 @@ public class Game {
     public Game(Blokus blokusApp, Board board, Inventory inventory) {
 
         //Initializes the game with the piece.
-        activePiece = new Piece(board, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
+        activePiece = new Piece(board, inventory, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
 
         this.board = board;
         
         this.inventory = inventory;
-
+        
         this.blokusApp = blokusApp;
+        
+        this.players = new Player[4];
+        
         //blokusApp.setMessage("BLOKUS");
     }
 
@@ -83,12 +89,12 @@ public class Game {
         if (turn < 4 && this.activePiece.firstAddPieceToBoard()) {
             turn++;
             piece = (int) (Math.random() * 21);
-            activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
+            activePiece = new Piece(board, inventory, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
 
         } else if (this.activePiece.addPieceToBoard()) {
             turn++;
             piece = (int) (Math.random() * 21);
-            this.activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
+            this.activePiece = new Piece(board, inventory, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
         }
     }
 
@@ -102,6 +108,20 @@ public class Game {
     
     // fills out inventory pane for player
     void populateInventory(Player player){
+    	// update turn indicator
+    	
+    	// update player name and score
+    	
+    	// Add remaining pieces
+    	int i;
+    	for (i = 0; i < player.inventory.length; i++) {
+    		if (player.inventory[i] == true) {
+    			
+    			Piece piece;
+    			piece = new Piece(board, inventory, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, i);
+    			piece.addPieceToInventory();
+    		}
+    	}
     	
     }
 }

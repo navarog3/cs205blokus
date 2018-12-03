@@ -12,6 +12,7 @@ public class Game {
     private final Blokus blokusApp;
     private Piece activePiece;
     private final Board board;
+    private final Inventory inventory;
     private int piece = (int) (Math.random() * 21);
     private final Color[] Colors = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
     private int turn = 0;
@@ -22,12 +23,14 @@ public class Game {
      * @param blokusApp A reference to the application (use to set messages).
      * @param board A reference to the board on which blocks are drawn
      */
-    public Game(Blokus blokusApp, Board board) {
+    public Game(Blokus blokusApp, Board board, Inventory inventory) {
 
         //Initializes the game with the piece.
         activePiece = new Piece(board, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
 
         this.board = board;
+        
+        this.inventory = inventory;
 
         this.blokusApp = blokusApp;
         //blokusApp.setMessage("BLOKUS");
@@ -95,5 +98,10 @@ public class Game {
         } else {
             System.out.println("No move available");
         }
+    }
+    
+    // fills out inventory pane for player
+    void populateInventory(Player player){
+    	
     }
 }

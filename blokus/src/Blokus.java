@@ -56,7 +56,7 @@ public class Blokus extends Application {
 
         Scene scene = new Scene(pane);
 
-        game = new Game(this, board);
+        game = new Game(this, board, inventory);
 
         // Can add events that occur automatically here.
         // setUpAnimation();
@@ -135,6 +135,13 @@ public class Blokus extends Application {
         board.setOnMouseMoved(e -> {
             game.hover(e.getSceneX(), e.getSceneY());
         });
+        inventory.setOnMousePressed(e -> {
+            game.placePiece();
+        });
+        inventory.setOnMouseMoved(e -> {
+            game.hover(e.getSceneX(), e.getSceneY());
+        });
+        
     }
 
     /**

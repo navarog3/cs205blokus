@@ -11,6 +11,8 @@ public class Piece {
     public ArrayList<Block> squares = new ArrayList<>();
 
     private Board board;
+    
+    private Inventory inventory;
 
     private Point[] squareLocations;
 
@@ -347,5 +349,19 @@ public class Piece {
             }
         }
         return move;
+    }
+    
+    public void addPieceToInventory() {
+        ArrayList<Point> newLocation = new ArrayList<>();
+        for (int i = 0; i < this.squareLocations.length; i++) {
+            Point point = new Point(this.squares.get(0).getX() + (int) squareLocations[i].getX(),
+                    this.squares.get(0).getY() + (int) squareLocations[i].getY());
+            newLocation.add(point);
+        }
+        //Puts a piece in the player's inventory
+
+        for (int i = 0; i < squareLocations.length; i++) {
+            this.inventory.addToInventory(this.squares.get(i));
+        }
     }
 }

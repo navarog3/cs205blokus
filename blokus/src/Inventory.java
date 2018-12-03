@@ -45,7 +45,7 @@ public class Inventory extends Pane {
         setBackground(new Background(myBF));
 
     }
-
+    
     /**
      * Adds ablokusSquare to the board array
      *

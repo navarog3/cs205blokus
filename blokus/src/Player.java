@@ -15,7 +15,7 @@ public class Player {
 			this.score = 0;
 			
 			int i = 0;
-			for (i = 0; i == 21; i++) {
+			for (i = 0; i < 21; i++) {
 				this.inventory[i] = true;
 			}
 			
@@ -27,7 +27,7 @@ public class Player {
 			this.score = 0;
 			
 			int i = 0;
-			for (i = 0; i == 21; i++) {
+			for (i = 0; i < 21; i++) {
 				this.inventory[i] = true;
 			}
 		}

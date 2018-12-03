@@ -29,7 +29,7 @@ public class Game {
     public Game(Blokus blokusApp, Board board, Board inventory) {
 
         //Initializes the game with the piece.
-        activePiece = new Piece(board, inventory, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
+        activePiece = new Piece(board, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
 
         this.board = board;
         
@@ -38,7 +38,7 @@ public class Game {
         this.blokusApp = blokusApp;
         
         this.players = new Player[4];
-        
+         
         blokusApp.setMessage("      BLOKUS     |  P1       0  |  P2       0  |  P3       0  |  P4       0  |  ");
         
         int i;
@@ -85,10 +85,14 @@ public class Game {
      * Handle the mouse clicked event.
      */
     void click(double x, double y) {
+
+    	
     }
 
     void hover(double x, double y) {
         this.activePiece.move((int) x / Board.BLOCK_SIZE, (int) (y - 20) / Board.BLOCK_SIZE);
+        
+        //TODO: hide if cursor is off the board?
     }
 
     /**
@@ -98,12 +102,12 @@ public class Game {
         if (turn < 4 && this.activePiece.firstAddPieceToBoard()) {
             turn++;
             piece = (int) (Math.random() * 21);
-            activePiece = new Piece(board, inventory, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
+            activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
 
         } else if (this.activePiece.addPieceToBoard()) {
             turn++;
             piece = (int) (Math.random() * 21);
-            this.activePiece = new Piece(board, inventory, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
+            this.activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
         }
     }
 
@@ -122,15 +126,21 @@ public class Game {
     	// update player name and score
     	
     	// Add remaining pieces
+    	//TODO: positioning in inventory pane
     	int i;
     	for (i = 0; i < player.inventory.length; i++) {
     		if (player.inventory[i] == true) {
     			
     			Piece piece;
-    			piece = new Piece(board, inventory, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, i);
-    			piece.addPieceToInventory();
+    			piece = new Piece(inventory, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, i);
+    			//piece.addPieceToInventory();
     		}
     	}
+    	
+    }
+    
+    // switches out active piece for piece in inventory
+    void selectPiece() {
     	
     }
 }

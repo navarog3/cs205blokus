@@ -76,7 +76,7 @@ public class Piece {
      * @param y the original y location of the piece
      * @param z Chooses which blokus piece to create
      */
-    public Piece(Board board, Board inventory, Color color, int x, int y, int z) {
+    public Piece(Board board, Color color, int x, int y, int z) {
         squareLocations = pieceConfigs[z];
         this.color = color;
         this.board = board;
@@ -353,17 +353,40 @@ public class Piece {
     
     // adds the piece to the inventory pane
     public void addPieceToInventory() {
-    	
-    	
-        //ArrayList<Point> newLocation = new ArrayList<>();
+
+        ArrayList<Point> newLocation = new ArrayList<>();
         for (int i = 0; i < this.squareLocations.length; i++) {
-            Point point = new Point(this.squares.get(0).getX() + (int) squareLocations[i].getX(),
-                    this.squares.get(0).getY() + (int) squareLocations[i].getY());
-//            newLocation.add(point);
+            Point point = new Point(4 + (int) squareLocations[i].getX(),
+            		board.pieceStack + (int) squareLocations[i].getY());
+            newLocation.add(point);
         }
 
         for (int i = 0; i < squareLocations.length; i++) {
             this.inventory.addToInventory(this.squares.get(i));
         }
+        
+        
+        board.pieceStack++;
+        /*
+        ArrayList<Point> newLocation = new ArrayList<>();
+        for (int i = 0; i < this.squareLocations.length; i++) {
+            Point point = new Point(this.squares.get(0).getX() + (int) squareLocations[i].getX(),
+                    this.squares.get(0).getY() + (int) squareLocations[i].getY());
+            newLocation.add(point);
+        }
+        boolean place = false;
+        //Checks if the piece fits on the board at the current location
+        //If so, adds the piece's blocks to the board.
+        if (this.fitsOnBoard(newLocation) && this.legalMove(newLocation)) {
+            for (int i = 0; i < squareLocations.length; i++) {
+                this.board.addToBoard(this.squares.get(i));
+            }
+            place = true;
+        }
+        return place;
+         * 
+         * 
+         * 
+         * */
     }
 }

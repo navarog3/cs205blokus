@@ -23,8 +23,9 @@ public class Board extends Pane {
     private final ArrayList<Line> verticalLines = new ArrayList<>();
     private final ArrayList<Circle> startingCircles = new ArrayList<>();
     public int score;
+    public int pieceStack;
 
-    //Creates a 2D array that will track the locations of all the pieces on the board.
+    //Creates a 2D array that will track the locations of all the pieces on the boards.
     public Block[][] squares = new Block[DIM_SQUARES][DIM_SQUARES];
 
     /**
@@ -65,7 +66,8 @@ public class Board extends Pane {
     // 	boardScalar multiplier for the width of the board (0.5).
     public Board(double boardScalar) {
         this.setPrefHeight(DIM_SQUARES * BLOCK_SIZE);
-        this.setPrefWidth(DIM_SQUARES * BLOCK_SIZE * boardScalar);
+        this.setPrefWidth(DIM_SQUARES * BLOCK_SIZE);
+        this.pieceStack = 1;
 
         //Create turn indicators
         //startingCircles.add(new Circle(BLOCK_SIZE / 2, BLOCK_SIZE / 2, BLOCK_SIZE / 2, Color.BLUE));

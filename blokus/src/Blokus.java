@@ -50,10 +50,11 @@ public class Blokus extends Application {
         statusLabel.setTextFill(Color.BLACK);
 
         BorderPane pane = new BorderPane();
+        
         pane.setCenter(board);
         pane.setTop(statusLabel);
         pane.setRight(inventory);
-
+        
         Scene scene = new Scene(pane);
 
         game = new Game(this, board, inventory);
@@ -135,9 +136,9 @@ public class Blokus extends Application {
         board.setOnMouseMoved(e -> {
             game.hover(e.getSceneX(), e.getSceneY());
         });
-        //inventory.setOnMousePressed(e -> {
-        //    game.selectPiece();
-        //});
+        inventory.setOnMousePressed(e -> {
+            game.selectPiece();
+        });
         inventory.setOnMouseMoved(e -> {
             game.hover(e.getSceneX(), e.getSceneY());
         });

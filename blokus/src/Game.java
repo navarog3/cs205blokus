@@ -14,7 +14,7 @@ public class Game {
     private final Blokus blokusApp;
     private Piece activePiece;
     private final Board board;
-    private final Inventory inventory;
+    private final Board inventory;
     private final Player[] players;
     private int piece = (int) (Math.random() * 21);
     private final Color[] Colors = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
@@ -26,7 +26,7 @@ public class Game {
      * @param blokusApp A reference to the application (use to set messages).
      * @param board A reference to the board on which blocks are drawn
      */
-    public Game(Blokus blokusApp, Board board, Inventory inventory) {
+    public Game(Blokus blokusApp, Board board, Board inventory) {
 
         //Initializes the game with the piece.
         activePiece = new Piece(board, inventory, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);

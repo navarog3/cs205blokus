@@ -60,6 +60,28 @@ public class Board extends Pane {
         setBackground(new Background(myBF));
 
     }
+    
+    // Initialize inventory board.
+    // 	boardScalar multiplier for the width of the board (0.5).
+    public Board(double boardScalar) {
+        this.setPrefHeight(DIM_SQUARES * BLOCK_SIZE);
+        this.setPrefWidth(DIM_SQUARES * BLOCK_SIZE * boardScalar);
+
+        //Create turn indicators
+        //startingCircles.add(new Circle(BLOCK_SIZE / 2, BLOCK_SIZE / 2, BLOCK_SIZE / 2, Color.BLUE));
+        //startingCircles.add(new Circle(BLOCK_SIZE / 2, DIM_SQUARES * (BLOCK_SIZE - .5), BLOCK_SIZE / 2, Color.RED));
+        //startingCircles.add(new Circle(DIM_SQUARES * (BLOCK_SIZE - .5), BLOCK_SIZE / 2, BLOCK_SIZE / 2, Color.YELLOW));
+        //startingCircles.add(new Circle(DIM_SQUARES * (BLOCK_SIZE - .5), DIM_SQUARES * (BLOCK_SIZE - .5), BLOCK_SIZE / 2, Color.GREEN));
+
+        //for (int i = 0; i < 4; i++) {
+        //    this.getChildren().add(startingCircles.get(i));
+        //}
+
+        BackgroundFill myBF = new BackgroundFill(Color.GREY, new CornerRadii(1),
+                new Insets(0.0, 0.0, 0.0, 0.0));// or null for the padding
+        setBackground(new Background(myBF));
+
+    }
 
     /**
      * Adds ablokusSquare to the board array
@@ -80,5 +102,14 @@ public class Board extends Pane {
      */
     public boolean isOccupied(int x, int y) {
         return (squares[x][y] != null);
+    }
+    
+    public void addToInventory(Block square) {
+        squares[square.getX()][square.getY()] = square;
+    }
+    
+    // Empties out the inventory pane
+    public void clearInventory() {
+    	
     }
 }

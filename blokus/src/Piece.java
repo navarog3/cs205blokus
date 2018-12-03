@@ -12,7 +12,7 @@ public class Piece {
 
     private Board board;
     
-    private Inventory inventory;
+    private Board inventory;
 
     private Point[] squareLocations;
 
@@ -76,7 +76,7 @@ public class Piece {
      * @param y the original y location of the piece
      * @param z Chooses which blokus piece to create
      */
-    public Piece(Board board, Inventory inventory, Color color, int x, int y, int z) {
+    public Piece(Board board, Board inventory, Color color, int x, int y, int z) {
         squareLocations = pieceConfigs[z];
         this.color = color;
         this.board = board;

@@ -39,7 +39,16 @@ public class Game {
         
         this.players = new Player[4];
         
-        //blokusApp.setMessage("BLOKUS");
+        blokusApp.setMessage("      BLOKUS     |  P1       0  |  P2       0  |  P3       0  |  P4       0  |  ");
+        
+        int i;
+        for (i = 0; i < players.length; i++) {
+        	Player player;
+        	player = new Player();
+        	players[i] = player;
+        }
+        
+        this.populateInventory(players[0]);
     }
 
     /**

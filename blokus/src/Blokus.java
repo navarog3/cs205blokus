@@ -135,9 +135,9 @@ public class Blokus extends Application {
         board.setOnMouseMoved(e -> {
             game.hover(e.getSceneX(), e.getSceneY());
         });
-        inventory.setOnMousePressed(e -> {
-            game.placePiece();
-        });
+        //inventory.setOnMousePressed(e -> {
+        //    game.selectPiece();
+        //});
         inventory.setOnMouseMoved(e -> {
             game.hover(e.getSceneX(), e.getSceneY());
         });

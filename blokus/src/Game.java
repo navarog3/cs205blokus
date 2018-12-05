@@ -254,20 +254,23 @@ public class Game {
 		// swaps active piece with inventory piece of lower index
 		
 		//find previous piece
-//		int i = 0;
-//		for (i = 1; i <= 21; i++) {
-//			if (players[turn % 4].inventory[Math.abs((piece - i) % 21)] == true) {
-//				//swap
-//				players[turn % 4].inventory[piece] = true;
-//				piece = Math.abs((piece - i) % 21);
-//				players[turn % 4].inventory[piece] = false;
-//				
-//				//redraw inventory and active piece
-//				activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
-//				
-//				
-//				return;
-//			}
-//		}
+		int i = 0;
+		for (i = piece + 20; i > piece; i--) {			
+			if (players[turn % 4].inventory[i % 21] == true) {
+				//swap
+				players[turn % 4].inventory[piece] = true;
+				piece = i % 21;
+				players[turn % 4].inventory[piece] = false;
+				
+				//redraw inventory and active piece
+				
+				activePiece.hide();
+				activePiece = new Piece(board, Colors[turn % 4], (int) mouseX / Board.BLOCK_SIZE, (int) (mouseY - 20) / Board.BLOCK_SIZE, piece);
+				
+				populateInventory(players[turn % 4]);
+				
+				return;
+			}
+		}		
 	}
 }

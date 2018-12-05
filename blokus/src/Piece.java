@@ -348,4 +348,13 @@ public class Piece {
         }
         return move;
     }
+    
+    public void hide() {
+    	// NOT WORKING PROPERLY: remove piece from canvas    	
+    	this.diagonals = null;
+    	this.adjacents = null;
+    	this.squareLocations = null;
+    	this.squares.clear();
+    	
+    }
 }

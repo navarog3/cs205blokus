@@ -154,7 +154,10 @@ public class Game {
     }
     
     // fills out inventory pane for player
-    void populateInventory(Player player){
+    void populateInventory(Player player){    	
+    	// clear pane
+    	inventory.getChildren().clear();
+    	
     	// TODO: update turn indicator
     	
     	// TODO: update player name and score
@@ -230,9 +233,10 @@ public class Game {
 				players[turn % 4].inventory[piece] = false;
 				
 				//redraw inventory and active piece
-				
+				activePiece.hide();
 				activePiece = new Piece(board, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
 				
+				populateInventory(players[turn % 4]);
 				
 				return;
 			}

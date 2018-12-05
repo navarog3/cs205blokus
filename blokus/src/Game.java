@@ -125,12 +125,11 @@ public class Game {
     
     // fills out inventory pane for player
     void populateInventory(Player player){
-    	// update turn indicator
+    	// TODO: update turn indicator
     	
-    	// update player name and score
+    	// TODO: update player name and score
     	
     	// Add remaining pieces
-    	//TODO: positioning in inventory pane
     	inventory.pieceStack = 0;
     	
     	int i;
@@ -138,15 +137,16 @@ public class Game {
     		if (player.inventory[i] == true) {
     			
     			Piece piece;
-    			if ((inventory.pieceStack * 3) > 36) {
-    				piece = new Piece(inventory, Colors[turn % 4], 15, (inventory.pieceStack * 2), i);
-    			} else if ((inventory.pieceStack * 3) > 18) {
-    				piece = new Piece(inventory, Colors[turn % 4], 10, (inventory.pieceStack * 2), i);
-    			} else {
-    				piece = new Piece(inventory, Colors[turn % 4], 5, (inventory.pieceStack * 3), i);
+    			
+    			if ((inventory.pieceStack) >= 5) {
+    				inventory.inventoryCols++;
+    				inventory.pieceStack = 0;
     			}
     			
-    			//piece.addPieceToInventory();
+    			// TODO: check overlapping, adjacent, and overflowing pieces 
+    			piece = new Piece(inventory, Colors[turn % 4], -3 + (inventory.inventoryCols * 5), (inventory.pieceStack * 4), i);
+    			
+    			
     			
     			inventory.pieceStack++;
     		}

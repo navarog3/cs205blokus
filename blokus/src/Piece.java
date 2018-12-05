@@ -11,8 +11,6 @@ public class Piece {
     public ArrayList<Block> squares = new ArrayList<>();
 
     private Board board;
-    
-    private Board inventory;
 
     private Point[] squareLocations;
 
@@ -94,8 +92,8 @@ public class Piece {
      * @param dir The direction to rotate the piece. 0=CCW, 1=CW, and 2=mirror.
      */
     public void rotate(int dir) {
-        //Updates the rotational configuratioan of the piece.
-        //Creates a new arraylist of the pieces' new square locations if it were to move.
+        //Updates the rotational configuration of the piece.
+        //Creates a new arrayList of the pieces' new square locations if it were to move.
         switch (dir) {
             case 0:
                 this.rotateCCW();
@@ -362,7 +360,7 @@ public class Piece {
         }
 
         for (int i = 0; i < squareLocations.length; i++) {
-            this.inventory.addToInventory(this.squares.get(i));
+            this.board.addToBoard(this.squares.get(i));
         }
         
         

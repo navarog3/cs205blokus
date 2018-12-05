@@ -63,7 +63,7 @@ public class Board extends Pane {
     }
     
     // Initialize inventory board.
-    // 	boardScalar multiplier for the width of the board (0.5).
+    // 	unused: boardScalar multiplier for the width of the board (0.5).
     public Board(double boardScalar) {
         this.setPrefHeight(DIM_SQUARES * BLOCK_SIZE);
         this.setPrefWidth(DIM_SQUARES * BLOCK_SIZE);
@@ -106,12 +106,8 @@ public class Board extends Pane {
         return (squares[x][y] != null);
     }
     
-    public void addToInventory(Block square) {
-        squares[square.getX()][square.getY()] = square;
-    }
-    
-    // Empties out the inventory pane
-    public void clearInventory() {
+    // Empties out the board
+    public void clearBoard() {
     	
     }
 }

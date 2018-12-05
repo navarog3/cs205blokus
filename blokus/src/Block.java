@@ -69,7 +69,7 @@ public class Block {
 //        this.borders[1].setEndX(x * Board.BLOCK_SIZE);
 //        this.borders[1].setStartY(y * Board.BLOCK_SIZE);
 //        this.borders[1].setEndY((y + 1) * Board.BLOCK_SIZE);
-        //Right Border
+        //Right Border 
         this.borders[2].setStartX((x + 1) * Board.BLOCK_SIZE);
         this.borders[2].setEndX((x + 1) * Board.BLOCK_SIZE);
         this.borders[2].setStartY(y * Board.BLOCK_SIZE);
@@ -79,7 +79,6 @@ public class Block {
         this.borders[3].setEndX((x + 1) * Board.BLOCK_SIZE);
         this.borders[3].setStartY((y + 1) * Board.BLOCK_SIZE);
         this.borders[3].setEndY((y + 1) * Board.BLOCK_SIZE);
-
         this.xPos = x;
         this.yPos = y;
     }

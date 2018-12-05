@@ -29,7 +29,7 @@ public class Game {
     public Game(Blokus blokusApp, Board board, Board inventory) {
 
         //Initializes the game with the piece.
-        activePiece = new Piece(board, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
+        
 
         this.board = board;
         
@@ -48,7 +48,11 @@ public class Game {
         	players[i] = player;
         }
         
-        this.populateInventory(players[0]);
+        
+        
+       activePiece = new Piece(board, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
+       
+       this.populateInventory(players[0]);
     }
 
     /**
@@ -127,13 +131,24 @@ public class Game {
     	
     	// Add remaining pieces
     	//TODO: positioning in inventory pane
+    	inventory.pieceStack = 0;
+    	
     	int i;
     	for (i = 0; i < player.inventory.length; i++) {
     		if (player.inventory[i] == true) {
     			
     			Piece piece;
-    			piece = new Piece(inventory, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, i);
+    			if ((inventory.pieceStack * 3) > 36) {
+    				piece = new Piece(inventory, Colors[turn % 4], 15, (inventory.pieceStack * 2), i);
+    			} else if ((inventory.pieceStack * 3) > 18) {
+    				piece = new Piece(inventory, Colors[turn % 4], 10, (inventory.pieceStack * 2), i);
+    			} else {
+    				piece = new Piece(inventory, Colors[turn % 4], 5, (inventory.pieceStack * 3), i);
+    			}
+    			
     			//piece.addPieceToInventory();
+    			
+    			inventory.pieceStack++;
     		}
     	}
     	

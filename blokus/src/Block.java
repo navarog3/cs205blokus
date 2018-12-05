@@ -124,7 +124,10 @@ public class Block {
      * Removes the block from theblokusBoard's Pane.
      */
     void removeFromDrawing() {
-        board.getChildren().remove(shape);
+        this.board.getChildren().remove(shape);
+        for (int i = 0; i < borders.length; i++) {
+            this.board.getChildren().remove(borders[i]);
+        }
     }
 
 }

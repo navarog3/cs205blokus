@@ -93,7 +93,6 @@ public class Piece {
      */
     public void rotate(int dir) {
         //Updates the rotational configuration of the piece.
-        //Creates a new arrayList of the pieces' new square locations if it were to move.
         switch (dir) {
             case 0:
                 this.rotateCCW();
@@ -349,9 +348,10 @@ public class Piece {
         return move;
     }
     
-    public void hide() {
-    	// move piece off screen    	
-    	this.move(-10, 0);
+    public void remove() {
+        for (int i = 0; i < this.squares.size(); i++){
+            squares.get(i).removeFromDrawing();
+        }
     	this.diagonals = null;
     	this.adjacents = null;
     	this.squareLocations = null;

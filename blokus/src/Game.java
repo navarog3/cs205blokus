@@ -51,6 +51,7 @@ public class Game {
         
         
        activePiece = new Piece(board, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
+       players[0].inventory[piece] = false;
        
        this.populateInventory(players[0]);
     }
@@ -131,6 +132,9 @@ public class Game {
     	
     	// Add remaining pieces
     	inventory.pieceStack = 0;
+    	inventory.inventoryCols = 1;
+    	int x = 0;		// x location for origin block
+    	int y = 0;		// y location for origin block
     	
     	int i;
     	for (i = 0; i < player.inventory.length; i++) {
@@ -143,12 +147,33 @@ public class Game {
     				inventory.pieceStack = 0;
     			}
     			
-    			// TODO: check overlapping, adjacent, and overflowing pieces 
-    			piece = new Piece(inventory, Colors[turn % 4], -3 + (inventory.inventoryCols * 5), (inventory.pieceStack * 4), i);
+    			// set estimated x and y locations for origin
+    			x = -3 + (inventory.inventoryCols * 5);
+    			y = 1 + (inventory.pieceStack * 4);
     			
+    			//x = 2;
+    		    //y = 0;
     			
+    			piece = new Piece(inventory, Colors[turn % 4], x, y, i);
     			
-    			inventory.pieceStack++;
+    			if (piece.addPieceToBoard() == true) {
+
+    			} else {
+    			// move the piece to a better spot   				
+    				
+    				if (y >= 19) {
+					y = 0;
+					x = x + 5;
+					inventory.inventoryCols++;
+    				inventory.pieceStack = 0;
+					}
+				
+					y = y + 1;
+					piece.move(x, y);
+				
+    			}
+    			
+    			inventory.pieceStack++;    			
     		}
     	}
     	
@@ -156,6 +181,10 @@ public class Game {
     
     // switches out active piece for piece in inventory
     void selectPiece() {
+    	//get piece from mouse location on inventory
+    	
+    	//swap active piece with inventory piece (remember to update square locations and player inventory)
+    	
     	
     }
 }

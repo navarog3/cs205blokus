@@ -119,6 +119,12 @@ public class Blokus extends Application {
                 case SPACE:
                     game.checkForMove();
                     break;
+                case Q:
+                	game.previousPiece();
+                	break;
+                case E:
+                	game.nextPiece();
+                	break;
 
             }
         });

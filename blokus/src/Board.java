@@ -110,6 +110,12 @@ public class Board extends Pane {
     
     // Empties out the board
     public void clearBoard() {
-    	
+    	int i = 0;
+    	int j = 0;
+    	for (i = 0; i < DIM_SQUARES; i++) {
+    		for (j = 0; j < DIM_SQUARES; j++) {
+    			squares[i][j] = null;
+    		}
+    	}
     }
 }

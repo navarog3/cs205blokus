@@ -14,7 +14,7 @@ public class Game {
     private final Blokus blokusApp;
     private Piece activePiece;
     private final Board board;
-    private final Board inventory;
+    private Board inventory;
     private final Player[] players;
     private int piece = (int) (Math.random() * 21);
     private final Color[] Colors = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
@@ -47,8 +47,6 @@ public class Game {
         	player = new Player();
         	players[i] = player;
         }
-        
-        
         
        activePiece = new Piece(board, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
        players[0].inventory[piece] = false;
@@ -104,16 +102,47 @@ public class Game {
      * Place the piece onto the board.
      */
     void placePiece() {
-        if (turn < 4 && this.activePiece.firstAddPieceToBoard()) {
-            turn++;
-            piece = (int) (Math.random() * 21);
-            activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
-
-        } else if (this.activePiece.addPieceToBoard()) {
-            turn++;
-            piece = (int) (Math.random() * 21);
-            this.activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
+    	if (players[turn % 4].active = true) {
+	        if (turn < 4 && this.activePiece.firstAddPieceToBoard()) {
+	            turn++;
+	            
+	            //pick up random piece for first turn
+	            piece = (int) (Math.random() * 21);
+	            players[turn % 4].inventory[piece] = false;
+	            activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
+	
+	        } else if (this.activePiece.addPieceToBoard()) {
+	            turn++;
+	            piece = -1;
+	            
+	            // find a piece not yet played
+	            int i = 0;
+	            while (piece == -1) {
+	            	if (players[turn % 4].inventory[i] == true) {
+	            		piece = i;
+	            		players[turn % 4].inventory[i] = false;
+	            	}
+	            	i++;
+	            	
+	            	if (i > 21) {
+	            		piece = -2;
+	            	}
+	            }
+	            
+	            if (piece >= 0) {
+	            	this.activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
+	            } else {
+	            	//player has no more pieces. set inactive
+	            	players[turn % 4].active = false;
+	            }
+	        }
+        } else {
+        	turn++;
         }
+    	
+        //redraw inventory for next player
+        inventory.clearBoard();
+        populateInventory(players[turn % 4]);
     }
 
     void checkForMove() {
@@ -162,10 +191,10 @@ public class Game {
     			// move the piece to a better spot   				
     				
     				if (y >= 19) {
-					y = 0;
-					x = x + 5;
-					inventory.inventoryCols++;
-    				inventory.pieceStack = 0;
+						y = 0;
+						x = x + 5;
+						inventory.inventoryCols++;
+	    				inventory.pieceStack = 0;
 					}
 				
 					y = y + 1;
@@ -187,4 +216,47 @@ public class Game {
     	
     	
     }
+
+	public void nextPiece() {
+		// swaps active piece with inventory piece of higher index
+		
+		//find next piece
+		int i = 0;
+		for (i = 1; i <= 21; i++) {
+			if (players[turn % 4].inventory[(piece + i) % 21] == true) {
+				//swap
+				players[turn % 4].inventory[piece] = true;
+				piece = (piece + i) % 21;
+				players[turn % 4].inventory[piece] = false;
+				
+				//redraw inventory and active piece
+				
+				activePiece = new Piece(board, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
+				
+				
+				return;
+			}
+		}
+	}
+
+	public void previousPiece() {
+		// swaps active piece with inventory piece of lower index
+		
+		//find previous piece
+//		int i = 0;
+//		for (i = 1; i <= 21; i++) {
+//			if (players[turn % 4].inventory[Math.abs((piece - i) % 21)] == true) {
+//				//swap
+//				players[turn % 4].inventory[piece] = true;
+//				piece = Math.abs((piece - i) % 21);
+//				players[turn % 4].inventory[piece] = false;
+//				
+//				//redraw inventory and active piece
+//				activePiece = new Piece(board, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
+//				
+//				
+//				return;
+//			}
+//		}
+	}
 }

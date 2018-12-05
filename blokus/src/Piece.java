@@ -350,7 +350,8 @@ public class Piece {
     }
     
     public void hide() {
-    	// NOT WORKING PROPERLY: remove piece from canvas    	
+    	// move piece off screen    	
+    	this.move(-10, 0);
     	this.diagonals = null;
     	this.adjacents = null;
     	this.squareLocations = null;

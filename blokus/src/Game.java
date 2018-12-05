@@ -2,6 +2,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
@@ -10,7 +11,9 @@ import javafx.scene.paint.Color;
  *
  */
 public class Game {
-
+	
+	public double mouseX;
+	public double mouseY;	
     private final Blokus blokusApp;
     private Piece activePiece;
     private final Board board;
@@ -48,7 +51,7 @@ public class Game {
         	players[i] = player;
         }
         
-       activePiece = new Piece(board, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
+       activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
        players[0].inventory[piece] = false;
        
        this.populateInventory(players[0]);
@@ -93,7 +96,9 @@ public class Game {
     }
 
     void hover(double x, double y) {
-        this.activePiece.move((int) x / Board.BLOCK_SIZE, (int) (y - 20) / Board.BLOCK_SIZE);
+        this.mouseX = x;
+        this.mouseY = y;
+    	this.activePiece.move((int) x / Board.BLOCK_SIZE, (int) (y - 20) / Board.BLOCK_SIZE);
         
         //TODO: hide if cursor is off the board?
     }
@@ -109,7 +114,7 @@ public class Game {
 	            //pick up random piece for first turn
 	            piece = (int) (Math.random() * 21);
 	            players[turn % 4].inventory[piece] = false;
-	            activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
+	            activePiece = new Piece(board, Colors[turn % 4], (int) mouseX / Board.BLOCK_SIZE, (int) (mouseY - 20) / Board.BLOCK_SIZE, piece);
 	
 	        } else if (this.activePiece.addPieceToBoard()) {
 	            turn++;
@@ -130,7 +135,7 @@ public class Game {
 	            }
 	            
 	            if (piece >= 0) {
-	            	this.activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
+	            	this.activePiece = new Piece(board, Colors[turn % 4], (int) mouseX / Board.BLOCK_SIZE, (int) (mouseY - 20) / Board.BLOCK_SIZE, piece);
 	            } else {
 	            	//player has no more pieces. set inactive
 	            	players[turn % 4].active = false;
@@ -149,6 +154,7 @@ public class Game {
         if (this.activePiece.availableMove()) {
             System.out.println("Move is available");
         } else {
+        	players[turn % 4].active = false;
             System.out.println("No move available");
         }
     }
@@ -233,8 +239,9 @@ public class Game {
 				players[turn % 4].inventory[piece] = false;
 				
 				//redraw inventory and active piece
+				
 				activePiece.hide();
-				activePiece = new Piece(board, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
+				activePiece = new Piece(board, Colors[turn % 4], (int) mouseX / Board.BLOCK_SIZE, (int) (mouseY - 20) / Board.BLOCK_SIZE, piece);
 				
 				populateInventory(players[turn % 4]);
 				
@@ -256,7 +263,7 @@ public class Game {
 //				players[turn % 4].inventory[piece] = false;
 //				
 //				//redraw inventory and active piece
-//				activePiece = new Piece(board, Colors[turn], Board.DIM_SQUARES / 2, 2, piece);
+//				activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
 //				
 //				
 //				return;

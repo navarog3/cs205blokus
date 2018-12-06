@@ -39,20 +39,22 @@ public class Game {
         this.blokusApp = blokusApp;
 
         this.players = new Player[4];
-
-        blokusApp.setMessage("      BLOKUS     |  P1       0  |  P2       0  |  P3       0  |  P4       0  |  ");
-
+        
+        String message = "																Scores:    ";
         int i;
         for (i = 0; i < players.length; i++) {
             Player player;
-            player = new Player();
+            player = new Player("Player " + (i + 1));
             players[i] = player;
+        	message = message + players[i].getName() + "    ";
+        	message = message + players[i].getScore() + ",    ";
         }
+        blokusApp.setMessage(message);
 
         activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
         players[0].inventory[piece] = false;
 
-        this.populateInventory(players[0]);
+        this.populateInventory();
     }
 
     /**
@@ -106,7 +108,10 @@ public class Game {
     void placePiece() {
         if (players[turn % 4].active = true) {
             if (turn < 4 && this.activePiece.firstAddPieceToBoard()) {
-                turn++;
+                // add # of blocks placed to score
+            	players[turn % 4].setScore(players[turn % 4].getScore() + this.activePiece.squares.size());
+            	
+            	turn++;
 
                 //pick up random piece for first turn
                 piece = (int) (Math.random() * 21);
@@ -114,7 +119,13 @@ public class Game {
                 activePiece = new Piece(board, Colors[turn % 4], (int) mouseX / Board.BLOCK_SIZE, (int) (mouseY - 20) / Board.BLOCK_SIZE, piece);
 
             } else if (this.activePiece.addPieceToBoard()) {
-                turn++;
+            	//if last placed, and not monomino, +15. Last placed is monomino, +20.
+            	
+            	// add # of blocks placed to score
+            	players[turn % 4].setScore(players[turn % 4].getScore() + this.activePiece.squares.size());
+            	
+            	
+            	turn++;
                 piece = -1;
 
                 // find a piece not yet played
@@ -141,10 +152,18 @@ public class Game {
         } else {
             turn++;
         }
-
+        //update scoreboard
+        String message = "																Scores:    ";
+        int i;
+        for (i = 0; i < 4; i++) {
+        	message = message + players[i].getName() + "    ";
+        	message = message + players[i].getScore() + ",    ";
+        }
+        blokusApp.setMessage(message);
+        
         //redraw inventory for next player
         inventory.clearBoard();
-        populateInventory(players[turn % 4]);
+        populateInventory();
     }
 
     void checkForMove() {
@@ -157,7 +176,7 @@ public class Game {
     }
 
     // fills out inventory pane for player
-    void populateInventory(Player player) {
+    void populateInventory() {
         // clear pane
         inventory.getChildren().clear();
 
@@ -170,8 +189,8 @@ public class Game {
         int y = 0;		// y location for origin block
 
         int i;
-        for (i = 0; i < player.inventory.length; i++) {
-            if (player.inventory[i] == true) {
+        for (i = 0; i < players[turn % 4].inventory.length; i++) {
+            if (players[turn % 4].inventory[i] == true) {
 
                 Piece piece;
 
@@ -234,7 +253,7 @@ public class Game {
                 activePiece.remove();
                 activePiece = new Piece(board, Colors[turn % 4], (int) mouseX / Board.BLOCK_SIZE, (int) (mouseY - 20) / Board.BLOCK_SIZE, piece);
 
-                populateInventory(players[turn % 4]);
+                populateInventory();
 
                 return;
             }
@@ -257,7 +276,7 @@ public class Game {
                 activePiece.remove();
                 activePiece = new Piece(board, Colors[turn % 4], (int) mouseX / Board.BLOCK_SIZE, (int) (mouseY - 20) / Board.BLOCK_SIZE, piece);
 
-                populateInventory(players[turn % 4]);
+                populateInventory();
 
                 return;
             }

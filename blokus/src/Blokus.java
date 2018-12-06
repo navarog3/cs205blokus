@@ -102,15 +102,15 @@ public class Blokus extends Application {
     private void setUpKeyPresses() {
         board.setOnKeyPressed(e -> {
             switch (e.getCode()) {
-                case LEFT:
+                case A:
                     game.rotateLeft();
                     break;
-                case RIGHT:
+                case D:
                     game.rotateRight();
                     break;
-                case DOWN:
+                case S:
                     break;
-                case UP:
+                case W:
                     game.mirror();
                     break;
                 case M:

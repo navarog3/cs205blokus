@@ -1,9 +1,9 @@
 
 public class Player {
 	
-		public String name;
+		private String name;
 		
-		public int score;
+		private int score;
 		
 		public boolean[] inventory = new boolean[21];
 		
@@ -38,4 +38,19 @@ public class Player {
 			}
 		}
 		
+		public int getScore() {
+			return this.score;
+		}
+		
+		public String getName() {
+			return this.name;
+		}
+		
+		public void setScore(int score) {
+			this.score = score;
+		}
+		
+		public void setName(String name) {
+			this.name = name;
+		}
 }

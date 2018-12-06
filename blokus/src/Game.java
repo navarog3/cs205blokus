@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
  *
  */
 public class Game {
-
+	
     public double mouseX;
     public double mouseY;
     private final Blokus blokusApp;
@@ -22,6 +22,7 @@ public class Game {
     private int piece = (int) (Math.random() * 21);
     private final Color[] Colors = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
     private int turn = 0;
+    private String scoreBoard = "															  Scores:    ";
 
     /**
      * Initialize the game. Selects a random shape to act as the current piece.
@@ -40,16 +41,15 @@ public class Game {
 
         this.players = new Player[4];
         
-        String message = "																Scores:    ";
         int i;
         for (i = 0; i < players.length; i++) {
             Player player;
             player = new Player("Player " + (i + 1));
             players[i] = player;
-        	message = message + players[i].getName() + "    ";
-        	message = message + players[i].getScore() + ",    ";
+        	this.scoreBoard = this.scoreBoard + players[i].getName() + "    ";
+        	this.scoreBoard = this.scoreBoard + players[i].getScore() + ",    ";
         }
-        blokusApp.setMessage(message);
+        blokusApp.setMessage(this.scoreBoard);
 
         activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
         players[0].inventory[piece] = false;
@@ -91,7 +91,13 @@ public class Game {
      * Handle the mouse clicked event.
      */
     void click(double x, double y) {
-
+    	int inventoryX = ((int) x / Board.BLOCK_SIZE) - 20;
+    	int inventoryY = (int) (y - 20) / Board.BLOCK_SIZE;
+    	//System.out.println((int) x / Board.BLOCK_SIZE + ",   " + (int) (y - 20) / Board.BLOCK_SIZE);
+    	System.out.println(inventoryX + ",    " + inventoryY);
+    	if (this.inventory.isOccupied(inventoryX, inventoryY) == true) {
+    		
+    	}
     }
 
     void hover(double x, double y) {
@@ -100,13 +106,21 @@ public class Game {
         this.activePiece.move((int) x / Board.BLOCK_SIZE, (int) (y - 20) / Board.BLOCK_SIZE);
 
         //TODO: hide if cursor is off the board?
+        
+        //debug
+        
     }
 
     /**
      * Place the piece onto the board.
      */
     void placePiece() {
+    	int numPieces;
+
+    	int i = 0;
+    	
         if (players[turn % 4].active = true) {
+        	
             if (turn < 4 && this.activePiece.firstAddPieceToBoard()) {
                 // add # of blocks placed to score
             	players[turn % 4].setScore(players[turn % 4].getScore() + this.activePiece.squares.size());
@@ -120,16 +134,32 @@ public class Game {
 
             } else if (this.activePiece.addPieceToBoard()) {
             	//if last placed, and not monomino, +15. Last placed is monomino, +20.
+            	numPieces = 0;
+            	for (i = 0; i < players[turn % 4].inventory.length; i++) {
+            		if (players[turn % 4].inventory[i] == true) {
+            			numPieces++;
+            		}
+            	}
             	
-            	// add # of blocks placed to score
-            	players[turn % 4].setScore(players[turn % 4].getScore() + this.activePiece.squares.size());
-            	
+            	if (numPieces == 0) {
+            		if (activePiece.squares.size() == 1) {
+            			// add 20
+            			players[turn % 4].setScore(players[turn % 4].getScore() + 20);
+            		} else {
+            			// add 15
+            			players[turn % 4].setScore(players[turn % 4].getScore() + 15);
+            		}
+            		players[turn % 4].active = false;
+            		
+            	} else {
+            		// add # of blocks placed to score
+            		players[turn % 4].setScore(players[turn % 4].getScore() + this.activePiece.squares.size());
+            	}
             	
             	turn++;
                 piece = -1;
-
+                i = 0;
                 // find a piece not yet played
-                int i = 0;
                 while (piece == -1) {
                     if (players[turn % 4].inventory[i] == true) {
                         piece = i;
@@ -153,13 +183,12 @@ public class Game {
             turn++;
         }
         //update scoreboard
-        String message = "																Scores:    ";
-        int i;
+        this.scoreBoard = "															  Scores:    ";
         for (i = 0; i < 4; i++) {
-        	message = message + players[i].getName() + "    ";
-        	message = message + players[i].getScore() + ",    ";
+        	this.scoreBoard = this.scoreBoard + players[i].getName() + "    ";
+        	this.scoreBoard = this.scoreBoard + players[i].getScore() + ",    ";
         }
-        blokusApp.setMessage(message);
+        blokusApp.setMessage(this.scoreBoard);
         
         //redraw inventory for next player
         inventory.clearBoard();
@@ -231,10 +260,13 @@ public class Game {
     }
 
     // switches out active piece for piece in inventory
-    void selectPiece() {
+    boolean selectPiece(int piece) {
         //get piece from mouse location on inventory
-
+    	return false;
+    	
         //swap active piece with inventory piece (remember to update square locations and player inventory)
+    	
+    	
     }
 
     public void nextPiece() {
@@ -282,4 +314,10 @@ public class Game {
             }
         }
     }
+
+	public void pass() {
+		// Checks to see if there are available moves for the current player on any pieces. 
+		// If there are none, sets the player to inactive.
+		
+	}
 }

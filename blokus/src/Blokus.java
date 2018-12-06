@@ -102,10 +102,10 @@ public class Blokus extends Application {
     private void setUpKeyPresses() {
         board.setOnKeyPressed(e -> {
             switch (e.getCode()) {
-                case A:
+                case Q:
                     game.rotateLeft();
                     break;
-                case D:
+                case E:
                     game.rotateRight();
                     break;
                 case S:
@@ -119,11 +119,14 @@ public class Blokus extends Application {
                 case SPACE:
                     game.checkForMove();
                     break;
-                case Q:
+                case A:
                 	game.previousPiece();
                 	break;
-                case E:
+                case D:
                 	game.nextPiece();
+                	break;
+                case F:
+                	game.pass();
                 	break;
 
             }
@@ -143,7 +146,7 @@ public class Blokus extends Application {
             game.hover(e.getSceneX(), e.getSceneY());
         });
         inventory.setOnMousePressed(e -> {
-            game.selectPiece();
+            game.click(e.getSceneX(), e.getSceneY());
         });
         inventory.setOnMouseMoved(e -> {
             game.hover(e.getSceneX(), e.getSceneY());

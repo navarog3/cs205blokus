@@ -27,7 +27,7 @@ public class Blokus extends Application {
     private Label statusLabel;
 
     private Stage primaryStage;
-    private Stage helpStage;
+    private Stage helpStage = null;
 
     /**
      * Launches the application.
@@ -134,7 +134,8 @@ public class Blokus extends Application {
                 	game.pass();
                 	break;
                 case H:
-                    displayHelp();
+                    if(helpStage == null)
+                        displayHelp();
             }
         });
         board.requestFocus(); // board is focused to receive key input
@@ -202,8 +203,9 @@ public class Blokus extends Application {
         helpStage.setTitle("Help Screen");
         helpStage.setScene(new Scene(pane));
 
+        helpStage.setOnCloseRequest(e -> {helpStage = null; } );
 
         helpStage.show();
-    }
 
+    }
 }

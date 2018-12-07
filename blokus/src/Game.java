@@ -24,7 +24,6 @@ public class Game {
     private final Color[] Colors = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
     private int turn = 0;
     private String scoreBoard = "Press H for help...        Scores:     ";
-    private boolean onBoard;
 
     /**
      * Initialize the game. Selects a random shape to act as the current piece.
@@ -60,7 +59,6 @@ public class Game {
 
         activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
         players[0].inventory[piece] = false;
-        this.onBoard = true;
         this.populateInventory();
     }
 
@@ -140,9 +138,9 @@ public class Game {
     /**
      * Place the piece onto the board.
      */
-    void placePiece() {
+    boolean placePiece() {
     	int numPieces;
-
+    	boolean placed = false;
     	int i = 0;
     	
         if (players[turn % 4].active = true) {
@@ -160,6 +158,7 @@ public class Game {
                 activePiece = new Piece(board, Colors[turn % 4], (int) mouseX / Board.BLOCK_SIZE, (int) (mouseY - 20) / Board.BLOCK_SIZE, piece);
 
             } else if (this.activePiece.addPieceToBoard()) {
+            	placed = true;
             	//if last placed, and not monomino, +15. Last placed is monomino, +20.
             	numPieces = 0;
             	for (i = 0; i < players[turn % 4].inventory.length; i++) {
@@ -220,6 +219,7 @@ public class Game {
         //redraw inventory for next player
         inventory.clearBoard();
         populateInventory();
+        return placed;
     }
 
     // fills out inventory pane for player
@@ -268,7 +268,6 @@ public class Game {
 	
 	                y = y + 1;
 	                piece.move(x, y);
-	
 	            }
 	
 	            inventory.pieceStack++;
@@ -278,7 +277,7 @@ public class Game {
 	}
 
 	void checkForMove() {
-        if (this.activePiece.availableMove()) {
+        if (this.activePiece.availableMoveSnap()) {
             System.out.println("Move is available");
         } else {
             players[turn % 4].active = false;
@@ -345,7 +344,6 @@ public class Game {
                 //redraw inventory and active piece
                 activePiece.remove();
                 activePiece = new Piece(board, Colors[turn % 4], (int) mouseX / Board.BLOCK_SIZE, (int) (mouseY - 20) / Board.BLOCK_SIZE, piece);
-                this.onBoard = true;
                 populateInventory();
 
                 return;
@@ -368,7 +366,6 @@ public class Game {
                 //redraw inventory and active piece
                 activePiece.remove();
                 activePiece = new Piece(board, Colors[turn % 4], (int) mouseX / Board.BLOCK_SIZE, (int) (mouseY - 20) / Board.BLOCK_SIZE, piece);
-                this.onBoard = true;
                 populateInventory();
 
                 return;
@@ -381,4 +378,42 @@ public class Game {
 		// If there are none, sets the player to inactive.
 		
 	}
+	
+    public void autoMove() {
+        while (!this.activePiece.availableMove()) {
+            this.nextPiece();
+        }
+        this.activePiece.availableMoveSnap();
+        this.placePiece();
+    }
+
+    void takeTurn() {
+        if(turn <= 3){
+            placePiece();
+        }
+        else if ((turn % 2) == 0) {
+            if(placePiece()) {
+            	autoMove();
+            }
+        }
+    }
+    
+    public boolean playerHasMove(Player player) {
+        boolean hasMove = false;
+        for (int i = 0; i < player.inventory.length; i++) {
+            if (player.inventory[i]) {
+                Piece dummy = new Piece(this.board, Colors[turn % 4], 0, 0, i);
+                if (dummy.availableMove()) {
+                    hasMove = true;
+                }
+                dummy.remove();
+            }
+        }
+        if (this.activePiece.availableMove()) {
+            hasMove = true;
+        }
+        return hasMove;
+    }
+
+
 }

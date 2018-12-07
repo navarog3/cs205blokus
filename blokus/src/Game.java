@@ -222,68 +222,68 @@ public class Game {
         populateInventory();
     }
 
-    void checkForMove() {
+    // fills out inventory pane for player
+	void populateInventory() {
+	    // clear pane
+	    inventory.getChildren().clear();
+	
+	    // TODO: update turn indicator
+	    // TODO: update player name and score
+	    // Add remaining pieces
+	    inventory.pieceStack = 0;
+	    inventory.inventoryCols = 1;
+	    int x = 0;		// x location for origin block
+	    int y = 0;		// y location for origin block
+	
+	    int i;
+	    for (i = 0; i < players[turn % 4].inventory.length; i++) {
+	        if (players[turn % 4].inventory[i] == true) {
+	
+	            Piece piece;
+	
+	            if ((inventory.pieceStack) >= 5) {
+	                inventory.inventoryCols++;
+	                inventory.pieceStack = 0;
+	            }
+	
+	            // set estimated x and y locations for origin
+	            x = -3 + (inventory.inventoryCols * 5);
+	            y = 1 + (inventory.pieceStack * 4);
+	
+	            //x = 2;
+	            //y = 0;
+	            piece = new Piece(inventory, Colors[turn % 4], x, y, i);
+	
+	            if (piece.addPieceToBoard() == true) {
+	
+	            } else {
+	                // move the piece to a better spot   				
+	
+	                if (y >= 19) {
+	                    y = 0;
+	                    x = x + 5;
+	                    inventory.inventoryCols++;
+	                    inventory.pieceStack = 0;
+	                }
+	
+	                y = y + 1;
+	                piece.move(x, y);
+	
+	            }
+	
+	            inventory.pieceStack++;
+	        }
+	    }
+	
+	}
+
+	void checkForMove() {
         if (this.activePiece.availableMove()) {
             System.out.println("Move is available");
         } else {
             players[turn % 4].active = false;
             System.out.println("No move available");
         }
-    }
-
-    // fills out inventory pane for player
-    void populateInventory() {
-        // clear pane
-        inventory.getChildren().clear();
-
-        // TODO: update turn indicator
-        // TODO: update player name and score
-        // Add remaining pieces
-        inventory.pieceStack = 0;
-        inventory.inventoryCols = 1;
-        int x = 0;		// x location for origin block
-        int y = 0;		// y location for origin block
-
-        int i;
-        for (i = 0; i < players[turn % 4].inventory.length; i++) {
-            if (players[turn % 4].inventory[i] == true) {
-
-                Piece piece;
-
-                if ((inventory.pieceStack) >= 5) {
-                    inventory.inventoryCols++;
-                    inventory.pieceStack = 0;
-                }
-
-                // set estimated x and y locations for origin
-                x = -3 + (inventory.inventoryCols * 5);
-                y = 1 + (inventory.pieceStack * 4);
-
-                //x = 2;
-                //y = 0;
-                piece = new Piece(inventory, Colors[turn % 4], x, y, i);
-
-                if (piece.addPieceToBoard() == true) {
-
-                } else {
-                    // move the piece to a better spot   				
-
-                    if (y >= 19) {
-                        y = 0;
-                        x = x + 5;
-                        inventory.inventoryCols++;
-                        inventory.pieceStack = 0;
-                    }
-
-                    y = y + 1;
-                    piece.move(x, y);
-
-                }
-
-                inventory.pieceStack++;
-            }
-        }
-
     }
 
     // switches out active piece for piece in inventory
@@ -319,7 +319,8 @@ public class Game {
     		
     		//this.activePiece.remove();
     		this.piece = pieceSelected;
-    		this.activePiece = new Piece(board, Colors[turn % 4], 10, 10, pieceSelected);
+    		activePiece.remove();
+            activePiece = new Piece(board, Colors[turn % 4], (int) mouseX / Board.BLOCK_SIZE, (int) (mouseY - 20) / Board.BLOCK_SIZE, piece);
     		
     		populateInventory();
     	}

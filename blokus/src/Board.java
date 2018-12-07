@@ -28,7 +28,7 @@ public class Board extends Pane {
 
     //Creates a 2D array that will track the locations of all the pieces on the boards.
     public Block[][] squares = new Block[DIM_SQUARES][DIM_SQUARES];
-
+    
     /**
      * Sizes the board to hold the specified number of squares in the x and y
      * dimensions.

@@ -19,7 +19,7 @@ public class Block {
     private int xPos;
     // The y location in board coordinates
     private int yPos;
-    public final Board board;
+    public Board board;
     private Color color;
 
     /**
@@ -128,6 +128,10 @@ public class Block {
         for (int i = 0; i < borders.length; i++) {
             this.board.getChildren().remove(borders[i]);
         }
+    }
+    
+    void setBoard(Board board) {
+    	this.board = board;
     }
 
 }

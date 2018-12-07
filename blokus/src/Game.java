@@ -23,6 +23,7 @@ public class Game {
     private final Color[] Colors = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
     private int turn = 0;
     private String scoreBoard = "															  Scores:    ";
+    private boolean onBoard;
 
     /**
      * Initialize the game. Selects a random shape to act as the current piece.
@@ -53,7 +54,7 @@ public class Game {
 
         activePiece = new Piece(board, Colors[turn % 4], Board.DIM_SQUARES / 2, 2, piece);
         players[0].inventory[piece] = false;
-
+        this.onBoard = true;
         this.populateInventory();
     }
 
@@ -96,15 +97,33 @@ public class Game {
     	//System.out.println((int) x / Board.BLOCK_SIZE + ",   " + (int) (y - 20) / Board.BLOCK_SIZE);
     	System.out.println(inventoryX + ",    " + inventoryY);
     	if (this.inventory.isOccupied(inventoryX, inventoryY) == true) {
-    		
+    		selectPiece(inventoryX, inventoryY);
     	}
     }
 
     void hover(double x, double y) {
         this.mouseX = x;
         this.mouseY = y;
-        this.activePiece.move((int) x / Board.BLOCK_SIZE, (int) (y - 20) / Board.BLOCK_SIZE);
-
+        int inventoryX = ((int) x / Board.BLOCK_SIZE) - 20;
+        int gameX = (int) x / Board.DIM_SQUARES;
+        int gameY = (int) (y - 20) / Board.BLOCK_SIZE;
+        
+        if (inventoryX >= 0) {
+        	
+        	if (this.onBoard = true) {
+        		this.activePiece.setBoard(inventory);
+        		this.onBoard = false;
+        	}
+        	this.activePiece.move(inventoryX + 20, gameY);
+        	
+        } else if (this.onBoard = false) {
+        	this.activePiece.setBoard(board);
+    		this.onBoard = true;
+    		this.activePiece.move(gameX, gameY);
+        	
+        } else {
+        	this.activePiece.move(gameX, gameY);
+        }
         //TODO: hide if cursor is off the board?
         
         //debug
@@ -260,13 +279,28 @@ public class Game {
     }
 
     // switches out active piece for piece in inventory
-    boolean selectPiece(int piece) {
-        //get piece from mouse location on inventory
-    	return false;
+    boolean selectPiece(int x, int y) {
+    	int counter = 0;
+    	
+    	//deduce the piece located at this point in inventory
+
+    	// tracks placement of pieces in inventory pane
+    	int i = 0;
+    	for (i = 0; i < players[turn % 4].inventory.length; i++) {
+    		if (players[turn % 4].inventory[i] == true) {
+    			counter++;
+    			//if () {
+    				
+    			//}
+    			
+    		}
+    	}
+
+    	
     	
         //swap active piece with inventory piece (remember to update square locations and player inventory)
     	
-    	
+    	return false;
     }
 
     public void nextPiece() {
@@ -284,7 +318,7 @@ public class Game {
                 //redraw inventory and active piece
                 activePiece.remove();
                 activePiece = new Piece(board, Colors[turn % 4], (int) mouseX / Board.BLOCK_SIZE, (int) (mouseY - 20) / Board.BLOCK_SIZE, piece);
-
+                this.onBoard = true;
                 populateInventory();
 
                 return;
@@ -307,7 +341,7 @@ public class Game {
                 //redraw inventory and active piece
                 activePiece.remove();
                 activePiece = new Piece(board, Colors[turn % 4], (int) mouseX / Board.BLOCK_SIZE, (int) (mouseY - 20) / Board.BLOCK_SIZE, piece);
-
+                this.onBoard = true;
                 populateInventory();
 
                 return;

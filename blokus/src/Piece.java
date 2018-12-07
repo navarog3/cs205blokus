@@ -117,7 +117,7 @@ public class Piece {
      * @param xPos
      * @param yPos
      */
-    public void move(int xPos, int yPos) {
+    public void move(int xPos, int yPos) {    	
         for (int i = 0; i < this.squareLocations.length; i++) {
             this.squares.get(i).moveToBlokusLocation(xPos + (int) this.squareLocations[i].getX(),
                     yPos + (int) this.squareLocations[i].getY());
@@ -357,5 +357,13 @@ public class Piece {
     	this.squareLocations = null;
     	this.squares.clear();
     	
+    }
+    
+    void setBoard(Board board) {
+    	// sends this piece to the desired board
+    	this.board = board;
+    	for (int i = 0; i < this.squares.size(); i++){
+            squares.get(i).setBoard(board);
+        }
     }
 }

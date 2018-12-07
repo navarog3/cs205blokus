@@ -19,10 +19,11 @@ public class Game {
     private final Board board;
     private Board inventory;
     private final Player[] players;
-    private int piece = (int) (Math.random() * 21);
+//    private int piece = (int) (Math.random() * 21);
+    private int piece = 20;
     private final Color[] Colors = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
     private int turn = 0;
-    private String scoreBoard = "															  Scores:    ";
+    private String scoreBoard = "A and D to switch pieces, Q and E to rotate a piece, W to mirror a piece, F to skip turn     |     ";
     private boolean onBoard;
 
     /**
@@ -45,10 +46,15 @@ public class Game {
         int i;
         for (i = 0; i < players.length; i++) {
             Player player;
-            player = new Player("Player " + (i + 1));
+            player = new Player("Player " + (i + 1) + ":");
             players[i] = player;
+            if (i != 3) {
         	this.scoreBoard = this.scoreBoard + players[i].getName() + "    ";
         	this.scoreBoard = this.scoreBoard + players[i].getScore() + ",    ";
+            } else {
+                this.scoreBoard = this.scoreBoard + players[i].getName() + "    ";
+        	this.scoreBoard = this.scoreBoard + players[i].getScore();
+            }
         }
         blokusApp.setMessage(this.scoreBoard);
 
@@ -102,31 +108,32 @@ public class Game {
     }
 
     void hover(double x, double y) {
-        this.mouseX = x;
-        this.mouseY = y;
-        int inventoryX = ((int) x / Board.BLOCK_SIZE) - 20;
-        int gameX = (int) x / Board.DIM_SQUARES;
-        int gameY = (int) (y - 20) / Board.BLOCK_SIZE;
-        
-        if (inventoryX >= 0) {
-        	
-        	if (this.onBoard = true) {
-        		this.activePiece.setBoard(inventory);
-        		this.onBoard = false;
-        	}
-        	this.activePiece.move(inventoryX + 20, gameY);
-        	
-        } else if (this.onBoard = false) {
-        	this.activePiece.setBoard(board);
-    		this.onBoard = true;
-    		this.activePiece.move(gameX, gameY);
-        	
-        } else {
-        	this.activePiece.move(gameX, gameY);
-        }
-        //TODO: hide if cursor is off the board?
-        
-        //debug
+        this.activePiece.move((int) x / Board.BLOCK_SIZE, (int) (y-20) / Board.BLOCK_SIZE);
+//        this.mouseX = x;
+//        this.mouseY = y;
+//        int inventoryX = ((int) x / Board.BLOCK_SIZE) - 20;
+//        int gameX = (int) x / Board.DIM_SQUARES;
+//        int gameY = (int) (y - 20) / Board.BLOCK_SIZE;
+//        
+//        if (inventoryX >= 0) {
+//        	
+//        	if (this.onBoard = true) {
+//        		this.activePiece.setBoard(inventory);
+//        		this.onBoard = false;
+//        	}
+//        	this.activePiece.move(inventoryX + 20, gameY);
+//        	
+//        } else if (this.onBoard = false) {
+//        	this.activePiece.setBoard(board);
+//    		this.onBoard = true;
+//    		this.activePiece.move(gameX, gameY);
+//        	
+//        } else {
+//        	this.activePiece.move(gameX, gameY);
+//        }
+//        //TODO: hide if cursor is off the board?
+//        
+//        //debug
         
     }
 
@@ -147,7 +154,8 @@ public class Game {
             	turn++;
 
                 //pick up random piece for first turn
-                piece = (int) (Math.random() * 21);
+//                piece = (int) (Math.random() * 21);
+                piece = 20;
                 players[turn % 4].inventory[piece] = false;
                 activePiece = new Piece(board, Colors[turn % 4], (int) mouseX / Board.BLOCK_SIZE, (int) (mouseY - 20) / Board.BLOCK_SIZE, piece);
 
@@ -177,14 +185,14 @@ public class Game {
             	
             	turn++;
                 piece = -1;
-                i = 0;
+                i = 20;
                 // find a piece not yet played
                 while (piece == -1) {
                     if (players[turn % 4].inventory[i] == true) {
                         piece = i;
                         players[turn % 4].inventory[i] = false;
                     }
-                    i++;
+                    i--;
 
                     if (i > 21) {
                         piece = -2;

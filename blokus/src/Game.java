@@ -102,15 +102,15 @@ public class Game {
     	int inventoryY = (int) (y - 20) / Board.BLOCK_SIZE;
     	//System.out.println((int) x / Board.BLOCK_SIZE + ",   " + (int) (y - 20) / Board.BLOCK_SIZE);
     	System.out.println(inventoryX + ",    " + inventoryY);
-    	if (this.inventory.isOccupied(inventoryX, inventoryY) == true) {
+    	//if (this.inventory.isOccupied(inventoryX, inventoryY) == true) {
     		selectPiece(inventoryX, inventoryY);
-    	}
+    	//}
     }
 
     void hover(double x, double y) {
         this.activePiece.move((int) x / Board.BLOCK_SIZE, (int) (y-20) / Board.BLOCK_SIZE);
-//        this.mouseX = x;
-//        this.mouseY = y;
+        this.mouseX = x;
+        this.mouseY = y;
 //        int inventoryX = ((int) x / Board.BLOCK_SIZE) - 20;
 //        int gameX = (int) x / Board.DIM_SQUARES;
 //        int gameY = (int) (y - 20) / Board.BLOCK_SIZE;
@@ -289,22 +289,40 @@ public class Game {
     // switches out active piece for piece in inventory
     boolean selectPiece(int x, int y) {
     	int counter = 0;
-    	
-    	//deduce the piece located at this point in inventory
-
-    	// tracks placement of pieces in inventory pane
+    	int pieceSpot = 1;
     	int i = 0;
+    	int spotX;
+    	int spotY;
+    	int pieceSelected = 0;
+    	//deduce the piece located at this point in inventory
+    	spotX = (int) x / 5;
+    	spotY = (int) y / 4;
+    	pieceSpot = spotY;
+    	if (spotX > 0) {
+    		pieceSpot = pieceSpot + (spotX) * 5;
+    	}
+    	System.out.println(pieceSpot);
+    	// tracks placement of pieces in inventory pane
     	for (i = 0; i < players[turn % 4].inventory.length; i++) {
     		if (players[turn % 4].inventory[i] == true) {
     			counter++;
-    			//if () {
-    				
-    			//}
+    			if (counter == pieceSpot + 1) {
+    				pieceSelected = i;
+    			}
     			
     		}
     	}
-
-    	
+    	System.out.println(pieceSelected);
+    	if (pieceSelected >= 0) {
+    		players[turn % 4].inventory[pieceSelected] = false;
+    		players[turn % 4].inventory[this.piece] = true;
+    		
+    		//this.activePiece.remove();
+    		this.piece = pieceSelected;
+    		this.activePiece = new Piece(board, Colors[turn % 4], 10, 10, pieceSelected);
+    		
+    		populateInventory();
+    	}
     	
         //swap active piece with inventory piece (remember to update square locations and player inventory)
     	

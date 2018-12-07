@@ -23,7 +23,7 @@ public class Game {
     private int piece = 20;
     private final Color[] Colors = {Color.RED, Color.BLUE, Color.YELLOW, Color.GREEN};
     private int turn = 0;
-    private String scoreBoard = "A and D to switch pieces, Q and E to rotate a piece, W to mirror a piece, F to skip turn     |     ";
+    private String scoreBoard = "Press H for help...        Scores:     ";
     private boolean onBoard;
 
     /**
@@ -210,7 +210,7 @@ public class Game {
             turn++;
         }
         //update scoreboard
-        this.scoreBoard = "															  Scores:    ";
+        this.scoreBoard = "Press H for help...        Scores:     ";
         for (i = 0; i < 4; i++) {
         	this.scoreBoard = this.scoreBoard + players[i].getName() + "    ";
         	this.scoreBoard = this.scoreBoard + players[i].getScore() + ",    ";

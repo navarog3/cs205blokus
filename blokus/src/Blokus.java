@@ -2,6 +2,8 @@
 import javafx.animation.KeyFrame;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -23,6 +25,9 @@ public class Blokus extends Application {
     private Board inventory;
     private Timeline animation;
     private Label statusLabel;
+
+    private Stage primaryStage;
+    private Stage helpStage;
 
     /**
      * Launches the application.
@@ -128,7 +133,8 @@ public class Blokus extends Application {
                 case F:
                 	game.pass();
                 	break;
-
+                case H:
+                    displayHelp();
             }
         });
         board.requestFocus(); // board is focused to receive key input
@@ -166,6 +172,38 @@ public class Blokus extends Application {
      */
     private void resume() {
         animation.play();
+    }
+
+    private void displayHelp() {
+
+        Pane pane = new Pane();
+
+        String blokusRules = "\n    Rules of Blokus:\n\n" +
+                             "    Blokus is a game played with 2-4 players taking turns placing an assortment\n" +
+                             "    of pieces on the board. The first player starts by placing any of their pieces\n" +
+                             "    on the board so that one of the blocks is touching the corner corresponding to\n" +
+                             "    their color. Players must then place each of their remaining pieces so that pieces\n" +
+                             "    of the same color are only touching a diagonal block. Play continues until a\n" +
+                             "    player places all of their pieces on the board or until no player can place a piece.\n" +
+                             "    Score is determined by who has the most individual blocks places on the board.\n" +
+                             "    If a player uses all of their pieces, they get an extra 15 added to their score. If\n" +
+                             "    the last piece placed is the monomino (single block), then that player gets an\n" +
+                             "    additional 20 instead.\n\n" +
+                             "    Controls:\n\n" +
+                             "    - A and D cycle through the previous and next pieces, respectively\n" +
+                             "    - Q and E rotate the current piece counter clockwise and clockwise, respectively\n" +
+                             "    - W mirrors the piece across the Y-axis\n" +
+                             "    - F skips the current player's turn";
+        Text text = new Text(blokusRules);
+        pane.getChildren().add(text);
+
+        pane.setPrefSize(575, 350);
+        helpStage = new Stage();
+        helpStage.setTitle("Help Screen");
+        helpStage.setScene(new Scene(pane));
+
+
+        helpStage.show();
     }
 
 }

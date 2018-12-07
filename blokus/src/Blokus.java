@@ -146,7 +146,7 @@ public class Blokus extends Application {
      */
     private void setUpMouseEvents() {
         board.setOnMousePressed(e -> {
-            game.placePiece();
+            game.takeTurn();
         });
         board.setOnMouseMoved(e -> {
             game.hover(e.getSceneX(), e.getSceneY());

@@ -328,6 +328,57 @@ public class Piece {
                         move = true;
                         System.out.println("Legal Move at (" + i + ", " + j + ")");
                         //Uncomment to break when 1 legal move is found
+                        //this.squareLocations = dummyLocations;
+                        //this.move(i, j);
+                        break rotateLoop;
+                    }
+                }
+            }
+            //Rotates the block so the checks can be re-done in a new orientation.
+            for (int i = 0; i < dummyLocations.length; i++) {
+                dummyLocations[i].move(-(int) dummyLocations[i].getY(), (int) dummyLocations[i].getX());
+            }
+            //Once the block has been rotated 4 times, mirror it.
+            if (h % 4 == 0) {
+                for (int i = 0; i < dummyLocations.length; i++) {
+                    dummyLocations[i].translate(-2 * (int) dummyLocations[i].getX(), 0);
+                }
+            }
+        }
+        return move;
+    }
+    
+  //Checks to see if the piece can be placed at any square on the board in 
+    //any orientation
+    public boolean availableMoveSnap() {
+
+        boolean move = false;
+
+        //Create new "dummy" piece that goes around the board
+        ArrayList<Point> newLocation = new ArrayList<>();
+
+        //squareLocations for the dummy piece are the same as the current piece.
+        Point[] dummyLocations = this.squareLocations;
+
+        rotateLoop:
+        for (int h = 1; h < 9; h++) {
+            //Loops through all the spaces on the board
+            for (int i = 0; i < Board.DIM_SQUARES; i++) {
+                for (int j = 0; j < Board.DIM_SQUARES; j++) {
+                    //Clears the dummy piece from the last check
+                    newLocation.clear();
+                    //Creates a new dummy piece using dummyLocations and the current
+                    //spot on the board
+                    for (int k = 0; k < dummyLocations.length; k++) {
+                        Point point = new Point(i + (int) dummyLocations[k].getX(),
+                                j + (int) dummyLocations[k].getY());
+                        newLocation.add(point);
+                    }
+                    //Checks if this location is a valid move.
+                    if (this.fitsOnBoard(newLocation) && this.legalMove(newLocation)) {
+                        move = true;
+                        System.out.println("Legal Move at (" + i + ", " + j + ")");
+                        //Uncomment to break when 1 legal move is found
                         this.squareLocations = dummyLocations;
                         this.move(i, j);
                         break rotateLoop;
